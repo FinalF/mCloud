@@ -31,7 +31,7 @@ public class Test {
 		for(File f:upFolder){
 			U.fileScan(f);		
 		}
-//		U.tablePrint();
+		U.tablePrint();
 		U.resultOutput(upOutputFile,"upload");
 		
 	}

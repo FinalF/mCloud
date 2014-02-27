@@ -1,0 +1,7 @@
+URL			Type			Size			Count
+/news/c	,	POST,561,1
+/special/newsclient/android_notice.html	,	GET,0,1
+/nc/last.do?1393362934675	,	GET,0,1
+/madr?app=7A16FBB6&platform=android&category=T1348649079062&location=10	,	GET,0,1
+/nc/now.do?1393364094969	,	GET,0,1
+/madr?app=7A16FBB6&platform=android&category=STARTUP&location=1	,	GET,0,1

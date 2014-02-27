@@ -5,13 +5,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
+import org.apache.commons.codec.digest.DigestUtils;
 
 import AbClasses.*;
 
 public class UploadPkg  extends PackageAnalysis {
-
+	Map<String,InfoItemSlot> dataTable = new HashMap<String,InfoItemSlot>();
 	
 	UploadPkg(){
 		super();
@@ -33,13 +36,11 @@ public class UploadPkg  extends PackageAnalysis {
 			if(!(l=in.nextLine().trim()).isEmpty()){
 				line=l.split(" ");
 				if(line.length>2 && line[2].contains("HTTP/1.1")){
-//					System.out.println("URL: "+line[1]);
 					item.typeUpdate(line[0]);
 					key=line[1];
 				}
 				if(line[0].contains("Content-Length")){
 					//we record the length
-//					System.out.println("lentgh: "+line[1]);
 					item.sizeUpdate(line[1]);
 				}
 			}
@@ -51,8 +52,6 @@ public class UploadPkg  extends PackageAnalysis {
 			dataTable.put(key, item);
 		}
 	}
-	
-	
 	protected void	resultOutput(PrintWriter outputFile, String pkgType){
 		System.out.println("Upload Table size: "+dataTable.size());
 		super.resultOutput(outputFile, pkgType);

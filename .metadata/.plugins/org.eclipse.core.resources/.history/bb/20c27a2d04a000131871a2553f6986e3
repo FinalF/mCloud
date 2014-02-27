@@ -5,18 +5,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-
 import AbClasses.*;
 
-
-public class DownloadPkg extends PackageAnalysis {
-//	Map<String,InfoItemSlot> dataTable = new HashMap<String,InfoItemSlot>();
+public class UploadPkg  extends PackageAnalysis {
+	Map<String,InfoItemSlot> dataTable = new HashMap<String,InfoItemSlot>();
 	
-	DownloadPkg(){
+	UploadPkg(){
 		super();
 	}
 
@@ -86,7 +86,7 @@ public class DownloadPkg extends PackageAnalysis {
 		}
 	}
 	protected void	resultOutput(PrintWriter outputFile, String pkgType){
-		System.out.println("Download Table size: "+dataTable.size());
+		System.out.println("Table size: "+dataTable.size());
 		super.resultOutput(outputFile, pkgType);
 	}
 	protected void tablePrint(){

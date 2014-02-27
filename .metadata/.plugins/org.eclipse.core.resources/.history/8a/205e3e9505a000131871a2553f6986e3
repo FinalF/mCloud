@@ -86,7 +86,7 @@ public class DownloadPkg extends PackageAnalysis {
 		}
 	}
 	protected void	resultOutput(PrintWriter outputFile, String pkgType){
-		System.out.println("Download Table size: "+dataTable.size());
+		System.out.println("Table size: "+dataTable.size());
 		super.resultOutput(outputFile, pkgType);
 	}
 	protected void tablePrint(){
