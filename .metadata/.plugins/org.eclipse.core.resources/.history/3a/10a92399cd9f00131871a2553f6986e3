@@ -1,0 +1,7 @@
+package AbClasses;
+import Interfaces.InfoItem;
+
+
+public abstract class HTTPAnalysis implements InfoItem{
+
+}

@@ -1,0 +1,15 @@
+HTTP/1.1 200 OK
+Server: nginx
+Date: Tue, 25 Feb 2014 21:30:13 GMT
+Content-Type: text/html; charset=gb2312
+Transfer-Encoding: chunked
+Connection: keep-alive
+Vary: Accept-Encoding
+X-Server-ID: S77
+
+3f8
+[{"result":0,"error":"","next_req":600,"ads":[{"style":"3","category":"FOCUS2","id":"10734","res_url":["http://img1.126.net/channel6/015585/640370_0221_sh.jpg","","",""],"monitorShowUrl":"","action":"1","expired_time":1393624800000,"monitorClickUrl":"","action_params":{"link_url":"http://www.samsung.com.cn/note10.12014"},"main_title":"ÈýÐÇGALAXY Note10.1 2014°æ","content":"","ratio":"100.0","sub_title":"","flight_id":"124","location":"1","monitor":"","show_time":"3.5"}]},{"result":0,"error":"","next_req":600,"ads":[{"style":"3","category":"FOCUS2","id":"10759","res_url":["http://img1.126.net/channel6/015598/640370_0225_sh.jpg","","",""],"monitorShowUrl":"","action":"1","expired_time":1393365600000,"monitorClickUrl":"","action_params":{"link_url":"http://www.ef.com.cn/online/lp/cn/2014yr/ab/131216_lp_mobile_ab.aspx?ctr=cn&lng=cs&ptn=nete&etag=E119648FE_NETE"},"main_title":"Ãâ·Ñ¶©ÔÄ Ã¿ÈÕÓ¢Óï","content":"","ratio":"100.0","sub_title":"","flight_id":"243","location":"2","monitor":"","show_time":"3.5"}]}]
+
+0
+
+ÿ

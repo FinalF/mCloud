@@ -1,0 +1,9 @@
+package AbClasses;
+
+import Interfaces.InfoItem;
+
+abstract class InfoItemSlot implements InfoItem{
+	private String type=null;
+	private int count=0;
+	private int size=0;
+}

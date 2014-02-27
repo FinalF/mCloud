@@ -1,0 +1,10 @@
+HTTP/1.1 304 Not Modified
+Server: nginx
+Date: Tue, 25 Feb 2014 21:16:01 GMT
+Content-Type: text/plain; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+X-Poll: 120
+via: yz_proxy2
+
+ÿ

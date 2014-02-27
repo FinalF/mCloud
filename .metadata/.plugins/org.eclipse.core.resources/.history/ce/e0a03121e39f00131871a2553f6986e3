@@ -1,0 +1,20 @@
+package HttpAnalysis;
+
+
+import java.util.HashMap;
+import java.util.Map;
+
+
+import AbClasses.*;
+
+
+public class DownloadPkg extends PackageAnalysis {
+	Map<String,InfoItemSlot> dataTable = new HashMap<String,InfoItemSlot>();
+	
+	DownloadPkg(){
+		super();
+	}
+
+	
+
+}

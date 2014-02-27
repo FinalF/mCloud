@@ -1,0 +1,7 @@
+package HttpAnalysis;
+
+import AbClasses.PackageAnalysis;
+
+public class DowloadPkg extends PackageAnalysis {
+
+}

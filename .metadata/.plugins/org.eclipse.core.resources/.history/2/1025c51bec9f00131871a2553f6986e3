@@ -1,0 +1,16 @@
+package HttpAnalysis;
+
+import java.io.File;
+
+public class Test {
+
+	public static void main(){
+		File[] folder = new File("data").listFiles();
+		DownloadPkg D = new DownloadPkg();
+		for(File f:folder){
+			
+		}
+	}
+	
+	
+}
