@@ -16,11 +16,12 @@ public abstract class PackageAnalysis {
 
 	
 	/*define the behaviour for analysis for down/upload packages*/
-	protected static Map<String,InfoItemSlot> dataTable = new HashMap<String,InfoItemSlot>();
-	protected static Map<String,InfoItemSlot> typeTable = new HashMap<String,InfoItemSlot>();
+	protected  Map<String,InfoItemSlot> dataTable;
+	protected  Map<String,InfoItemSlot> typeTable;
 	
 	protected PackageAnalysis(){
-		
+		dataTable = new HashMap<String,InfoItemSlot>();
+		typeTable = new HashMap<String,InfoItemSlot>();
 	}
 	
 	/*read in packages, return a hashmap contains all the information for analysis*/

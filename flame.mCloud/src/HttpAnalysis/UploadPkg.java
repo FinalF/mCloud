@@ -52,6 +52,9 @@ public class UploadPkg  extends PackageAnalysis {
 		}
 	}
 	
+	protected  void typeTableGen(){
+		super.typeTableGen();
+	}
 	
 	protected void	 overallResultOutput(PrintWriter outputFile, String pkgType){
 		System.out.println("Upload Table size: "+dataTable.size());

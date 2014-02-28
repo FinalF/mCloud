@@ -4,15 +4,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-import org.apache.commons.codec.digest.DigestUtils;
+
 
 public class Test {
 
 	public static void main(String args[]) throws FileNotFoundException{
 		
-//		File[] upFolder = new File("uploaddata").listFiles();
-//		PrintWriter upOutputFile = new PrintWriter(new File("record/Overall_Upload.txt"));
-//		PrintWriter upOutputFile2 = new PrintWriter(new File("record/Type_Upload.txt"));
+		File[] upFolder = new File("uploaddata").listFiles();
+		PrintWriter upOutputFile = new PrintWriter(new File("record/Overall_Upload.txt"));
+		PrintWriter upOutputFile2 = new PrintWriter(new File("record/Type_Upload.txt"));
 //		
 		File[] downFolder = new File("downloaddata").listFiles();
 		PrintWriter downOutputFile = new PrintWriter(new File("record/Overall_Download.txt"));
@@ -30,13 +30,15 @@ public class Test {
 		
 		
 		
-//		UploadPkg U = new UploadPkg();
-//		System.out.println("Upload Package #: "+upFolder.length);
-//		for(File f:upFolder){
-//			U.fileScan(f);		
-//		}
-////		U.tablePrint();
-//		U.resultOutput(upOutputFile,"upload");
+		UploadPkg U = new UploadPkg();
+		System.out.println("Upload Package #: "+upFolder.length);
+		for(File f:upFolder){
+			U.fileScan(f);		
+		}
+//		U.tablePrint();
+		U.typeTableGen();
+		U.overallResultOutput(upOutputFile,"upload");
+		U.typeResultOutput(upOutputFile2,"uploadType");
 		
 	}
 	

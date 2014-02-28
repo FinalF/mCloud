@@ -44,6 +44,7 @@ public class InfoItemSlot implements InfoItem{
 	 
 	 public void sizePlus(int size){
 		 item[1]+=String.valueOf(size+Integer.parseInt(item[1]));
+		 if(Integer.parseInt(item[1])==0) item[1]="0";
 	 }
 	 
 	 public void typeUpdate(String type){
