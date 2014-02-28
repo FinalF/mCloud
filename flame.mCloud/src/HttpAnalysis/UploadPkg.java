@@ -37,7 +37,7 @@ public class UploadPkg  extends PackageAnalysis {
 					item.typeUpdate(line[0]);
 					key=line[1];
 				}
-				if(line[0].contains("Content-Length")){
+				if(line[0].contains("Content-Length") && line.length>1){
 					//we record the length
 //					System.out.println("lentgh: "+line[1]);
 					item.sizeUpdate(line[1]);
