@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.Map;
 import java.util.Scanner;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -91,10 +92,21 @@ public class DownloadPkg extends PackageAnalysis {
 			dataTable.put(key, item);
 		}
 	}
-	protected void	resultOutput(PrintWriter outputFile, String pkgType){
-		System.out.println("Download Table size: "+dataTable.size());
-		super.resultOutput(outputFile, pkgType);
+	
+	
+	protected  void typeTableGen(){
+		super.typeTableGen();
 	}
+	protected void	 overallResultOutput(PrintWriter outputFile, String pkgType){
+		System.out.println("Download Table size: "+dataTable.size());
+		super.resultOutput(outputFile, pkgType,dataTable);
+	}
+	
+	protected void	 typeResultOutput(PrintWriter outputFile, String pkgType){
+		System.out.println("Download Type Table size: "+typeTable.size());
+		super.resultOutput(outputFile, pkgType,typeTable);
+	}
+	
 	protected void tablePrint(){
 		super.tablePrint();
 	}

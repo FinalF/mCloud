@@ -7,6 +7,11 @@ public interface InfoItem {
 	
 
 	public void countPlus();
+	public void countPlus(int count);
+	public void sizeUpdate(String size);	
+	public void sizePlus(int size); //add size to current size
+	public void typeUpdate(String type);
+	
 	public String returnType(); 
 		/*Download: html/text  video/stream, etc
 		 * Upload: GET/HEAD/Post...etc*/

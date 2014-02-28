@@ -1,0 +1,7 @@
+Hash			Type			Size			Count
+emptyDownloadPkg	,	Empty,0,1
+ad255c035af258128c75a26a0d0f24dca19789c3	,	text/html,3426,1
+1f887c8f81128c1488e7c94b0745f557e87e7a9a	,	application/json,331,1
+8b662bac97d3cb69d8e85bfe8711f7d7fe06a846	,	application/json,454,1
+emptyDownloadPkgtext/plain	,	text/plain,0,2
+emptyDownloadPkgtext/html	,	text/html,0,1

@@ -10,19 +10,23 @@ public class Test {
 
 	public static void main(String args[]) throws FileNotFoundException{
 		
-		File[] upFolder = new File("uploaddata").listFiles();
+//		File[] upFolder = new File("uploaddata").listFiles();
+//		PrintWriter upOutputFile = new PrintWriter(new File("record/Overall_Upload.txt"));
+//		PrintWriter upOutputFile2 = new PrintWriter(new File("record/Type_Upload.txt"));
+//		
 		File[] downFolder = new File("downloaddata").listFiles();
-		PrintWriter upOutputFile = new PrintWriter(new File("record/HashmapRecordUpload.txt"));
-		PrintWriter downOutputFile = new PrintWriter(new File("record/HashmapRecordDownload.txt"));
+		PrintWriter downOutputFile = new PrintWriter(new File("record/Overall_Download.txt"));
+		PrintWriter downOutputFile2 = new PrintWriter(new File("record/Type_Download.txt"));
 		
 		DownloadPkg D = new DownloadPkg();
 		System.out.println("Download Package #: "+downFolder.length);
 		for(File f:downFolder){
-			D.fileScan(f);
-			
+			D.fileScan(f);		
 		}
+		D.typeTableGen();
 //		D.tablePrint();
-		D.resultOutput(downOutputFile,"download");
+		D.overallResultOutput(downOutputFile,"download");
+		D.typeResultOutput(downOutputFile2,"downloadType");
 		
 		
 		

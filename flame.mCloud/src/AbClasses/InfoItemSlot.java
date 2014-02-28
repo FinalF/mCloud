@@ -1,5 +1,7 @@
 package AbClasses;
 
+import java.io.File;
+
 import Interfaces.InfoItem;
 
 public class InfoItemSlot implements InfoItem{
@@ -29,8 +31,19 @@ public class InfoItemSlot implements InfoItem{
 	 	item[2]=String.valueOf(count);
 	 }
 	
+	 public void countPlus(int count){
+	 	int oldCount = Integer.parseInt(item[2]);
+	 	oldCount+=count;
+	 	item[2]=String.valueOf(oldCount);
+	 }
+	 
+	 
 	 public void sizeUpdate(String size){
 		 item[1]=size;
+	 }
+	 
+	 public void sizePlus(int size){
+		 item[1]+=String.valueOf(size+Integer.parseInt(item[1]));
 	 }
 	 
 	 public void typeUpdate(String type){
@@ -52,5 +65,6 @@ public class InfoItemSlot implements InfoItem{
 	 public String toString(){
 		 return (item[0]+","+item[1]+","+item[2]);
 	 }
+
 
 }

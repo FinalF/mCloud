@@ -53,10 +53,16 @@ public class UploadPkg  extends PackageAnalysis {
 	}
 	
 	
-	protected void	resultOutput(PrintWriter outputFile, String pkgType){
+	protected void	 overallResultOutput(PrintWriter outputFile, String pkgType){
 		System.out.println("Upload Table size: "+dataTable.size());
-		super.resultOutput(outputFile, pkgType);
+		super.resultOutput(outputFile, pkgType,dataTable);
 	}
+	
+	protected void	 typeResultOutput(PrintWriter outputFile, String pkgType){
+		System.out.println("Upload Type Table size: "+dataTable.size());
+		super.resultOutput(outputFile, pkgType,typeTable);
+	}
+	
 	protected void tablePrint(){
 		super.tablePrint();
 	}

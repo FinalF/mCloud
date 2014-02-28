@@ -17,14 +17,41 @@ public abstract class PackageAnalysis {
 	
 	/*define the behaviour for analysis for down/upload packages*/
 	protected static Map<String,InfoItemSlot> dataTable = new HashMap<String,InfoItemSlot>();
-	
+	protected static Map<String,InfoItemSlot> typeTable = new HashMap<String,InfoItemSlot>();
 	
 	protected PackageAnalysis(){
 		
 	}
 	
+	/*read in packages, return a hashmap contains all the information for analysis*/
 	protected abstract void fileScan(File f) throws FileNotFoundException;
 	
+	
+	
+	/*check dataTable, merge them based on transaction type.
+	 * Construct another hashmap to record it*/
+	protected  void typeTableGen(){
+
+		for(String key: dataTable.keySet()){
+				/*This http transanction happens more than once*/
+				String typeType = dataTable.get(key).returnType();
+				int typeCount = dataTable.get(key).returnCount();
+				int typeSize = typeCount*dataTable.get(key).returnSize();
+				
+				InfoItemSlot item = new InfoItemSlot(typeType,typeSize,typeCount);
+				if(!typeTable.containsKey(typeType)){
+					/*update the dupTable*/
+					typeTable.put(typeType,item);
+	
+				}else{
+					typeTable.get(typeType).sizePlus(typeSize);
+					typeTable.get(typeType).countPlus(typeCount);
+				}
+			
+		}
+	}
+	
+
 	
 	protected void tablePrint(){
 		for(String key: dataTable.keySet()){
@@ -34,13 +61,13 @@ public abstract class PackageAnalysis {
 		}
 	}
 	
-	protected void resultOutput(PrintWriter outputFile, String pkgType){
+	protected void resultOutput(PrintWriter outputFile, String pkgType, Map<String,InfoItemSlot> table){
 		outputFile.flush();
 		outputFile.println(keyTranslate(pkgType)+"\t\t\tType\t\t\tSize\t\t\tCount");
-		for(String key: dataTable.keySet()){
+		for(String key: table.keySet()){
 			outputFile.print(key);
 			outputFile.print("\t,\t");
-			outputFile.println(dataTable.get(key).toString());
+			outputFile.println(table.get(key).toString());
 		}
 		outputFile.close();
 	}
@@ -51,6 +78,10 @@ public abstract class PackageAnalysis {
 			key = "Hash";
 		}else if(pkgType.equals("upload")){
 			key = "URL";
+		}else if(pkgType.equals("uploadType")){
+			key = "Upload Type";
+		}else if(pkgType.equals("downloadType")){
+			key = "Download Type";
 		}else{
 			key = "error";
 		}
