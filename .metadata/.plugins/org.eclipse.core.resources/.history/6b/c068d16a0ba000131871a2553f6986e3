@@ -26,13 +26,13 @@ public class Test {
 		
 		
 		
-//		UploadPkg U = new UploadPkg();
-//		System.out.println("Upload Package #: "+upFolder.length);
-//		for(File f:upFolder){
-//			U.fileScan(f);		
-//		}
-////		U.tablePrint();
-//		U.resultOutput(upOutputFile,"upload");
+		UploadPkg U = new UploadPkg();
+		System.out.println("Upload Package #: "+upFolder.length);
+		for(File f:upFolder){
+			U.fileScan(f);		
+		}
+//		U.tablePrint();
+		U.resultOutput(upOutputFile,"upload");
 		
 	}
 	

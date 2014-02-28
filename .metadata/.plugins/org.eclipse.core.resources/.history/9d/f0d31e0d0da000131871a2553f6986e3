@@ -42,13 +42,10 @@ public class DownloadPkg extends PackageAnalysis {
 					item.sizeUpdate(line[1]);
 //					System.out.println("SIze is: "+line[1]);
 					if(line[1].equals("0")){
-						if(typeDefined==false){
+						if(typeDefined==false)
 						item.typeUpdate("Empty");
 						System.out.println("An emplty package! ");
 						key="emptyDownloadPkg";
-						}else{
-							key="emptyDownloadPkg"+item.returnType();
-						}
 						emptyPkg=true;
 					}
 
@@ -57,7 +54,7 @@ public class DownloadPkg extends PackageAnalysis {
 					String[] contentType = line[1].toString().split(";");
 					item.typeUpdate(contentType[0]);
 					System.out.println("Type is: "+contentType[0]);
-					if(emptyPkg==true) break;
+					if(emptyPkg==true) {key=key.concat(contentType[0].toString());break;}
 				
 					
 				}else if(line[0].contains("Transfer-Encoding")){

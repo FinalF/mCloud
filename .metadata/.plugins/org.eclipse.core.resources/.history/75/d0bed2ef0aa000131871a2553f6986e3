@@ -42,21 +42,18 @@ public class DownloadPkg extends PackageAnalysis {
 					item.sizeUpdate(line[1]);
 //					System.out.println("SIze is: "+line[1]);
 					if(line[1].equals("0")){
-						if(typeDefined==false){
+						if(typeDefined==false)
 						item.typeUpdate("Empty");
 						System.out.println("An emplty package! ");
 						key="emptyDownloadPkg";
-						}else{
-							key="emptyDownloadPkg"+item.returnType();
-						}
 						emptyPkg=true;
 					}
 
 				}else if(line[0].contains("Content-Type")){
 					typeDefined=true; //it has a type
-					String[] contentType = line[1].toString().split(";");
+					String[] contentType = line[1].split(";");
 					item.typeUpdate(contentType[0]);
-					System.out.println("Type is: "+contentType[0]);
+					System.out.println("Type is: "+line[1]);
 					if(emptyPkg==true) break;
 				
 					
@@ -68,6 +65,7 @@ public class DownloadPkg extends PackageAnalysis {
 			}else{
 //				System.out.println("Should be an empty line: "+in.nextLine()); //jump the blank line
 				/*Process the messagebody*/
+				System.out.println("Start to process message");
 				StringBuilder s = new StringBuilder();
 				if(chunkEncoding==true){
 					item.sizeUpdate(String.valueOf(Integer.parseInt(in.nextLine(), 16)));//file length
@@ -75,11 +73,11 @@ public class DownloadPkg extends PackageAnalysis {
 							s.append(in.nextLine());
 						}
 				}else{
+					System.out.println("No chunk encoding");
 					while(in.hasNextLine()){
 						s.append(in.nextLine());
 					}
 				}
-				if(emptyPkg==false)
 				key=DigestUtils.shaHex(s.toString());
 //				System.out.println("THe hash value is: "+key);
 			}

@@ -42,21 +42,18 @@ public class DownloadPkg extends PackageAnalysis {
 					item.sizeUpdate(line[1]);
 //					System.out.println("SIze is: "+line[1]);
 					if(line[1].equals("0")){
-						if(typeDefined==false){
+						if(typeDefined==false)
 						item.typeUpdate("Empty");
 						System.out.println("An emplty package! ");
 						key="emptyDownloadPkg";
-						}else{
-							key="emptyDownloadPkg"+item.returnType();
-						}
 						emptyPkg=true;
 					}
 
 				}else if(line[0].contains("Content-Type")){
 					typeDefined=true; //it has a type
-					String[] contentType = line[1].toString().split(";");
+					String[] contentType = line[1].split(";");
 					item.typeUpdate(contentType[0]);
-					System.out.println("Type is: "+contentType[0]);
+					System.out.println("Type is: "+contentType);
 					if(emptyPkg==true) break;
 				
 					
