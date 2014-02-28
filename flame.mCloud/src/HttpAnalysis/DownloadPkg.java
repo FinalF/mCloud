@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.Map;
 import java.util.Scanner;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -35,7 +34,12 @@ public class DownloadPkg extends PackageAnalysis {
 		boolean chunkEncoding=false;
 		boolean emptyPkg=false;
 		boolean typeDefined=false;
+		boolean hasNext=false; //has another http pkg followed
 		String key=null;
+		if(!in.hasNextLine()){
+			endOfPkg=true;
+		}
+			
 		InfoItemSlot item = new InfoItemSlot(null,0,1);
 		while(in.hasNextLine()){
 			/*Process the header*/
@@ -86,25 +90,46 @@ public class DownloadPkg extends PackageAnalysis {
 				if(chunkEncoding==true){
 					item.sizeUpdate(String.valueOf(Integer.parseInt(in.nextLine().trim(), 16)));//file length
 						while(in.hasNextLine() && !in.nextLine().trim().equals("0")){
-							s.append(in.nextLine().trim());
+							String thisLine=in.nextLine();
+							s.append(thisLine.trim());
+							sizeCount+=thisLine.length();
 						}
+						/*Another http package followed*/
 				}else{
-					while(in.hasNextLine()){
-						s.append(in.nextLine().trim());
+					while(in.hasNextLine() && (in.nextLine().length()+sizeCount)<=item.returnSize()){
+						String thisLine=in.nextLine();
+						s.append(thisLine.trim());
+						sizeCount+=thisLine.length();
+					}
+					/*Another http package followed*/
+					if(in.hasNextLine() && sizeCount+in.nextLine().length()>item.returnSize()){
+						hasNext=true;
+						String thisLine=in.nextLine();
+						int i=0;
+						for(;i<(item.returnSize()-sizeCount);i++){
+							s.append(thisLine.charAt(i));
+						}
+						sizeCount+=i;
 					}
 				}
+				
 				if(emptyPkg==false)
 				key=DigestUtils.shaHex(s.toString());
-				System.out.println("The size of the message is: "+s.toString().length());
+//				System.out.println("The size of the message is: "+s.toString().length());
 //				System.out.println("THe hash value is: "+key);
 			}
 		}
-		/*update the hash map*/
-		if(dataTable.containsKey(key)){
-			dataTable.get(key).countPlus();
-		}else{
-			dataTable.put(key, item);
-		}
+		
+
+			/*update the hash map*/
+			if(dataTable.containsKey(key)){
+				dataTable.get(key).countPlus();
+			}else{
+				dataTable.put(key, item);
+			}
+
+		
+//		if(hasNext=true) httpPackageDetect(in);
 	}
 	
 	protected  void typeTableGen(){
