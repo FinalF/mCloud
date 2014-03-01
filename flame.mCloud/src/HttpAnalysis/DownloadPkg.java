@@ -100,19 +100,7 @@ public class DownloadPkg extends PackageAnalysis {
 							s.append(thisLine.trim());
 							sizeCount+=thisLine.length();
 						}
-						if(emptyPkg==false)
-							key=DigestUtils.shaHex(s.toString());
-//							System.out.println("The size of the message is: "+s.toString().length());
-						
-						/*update the hash map*/
-						if(dataTable.containsKey(key)){
-							dataTable.get(key).countPlus();
-						}else{
-							dataTable.put(key, item);
-						}
-						/*Another http package followed*/
-//						httpPackageDetect(fin,skipByte+2);
-						item = new InfoItemSlot(null,0,1);
+						item=updateDataTable(emptyPkg, key,s,item);
 				}else{
 //					System.out.println("No chunkencoding!");
 					String thisLine=null;
@@ -126,24 +114,10 @@ public class DownloadPkg extends PackageAnalysis {
 							}
 							sizeCount+=i;
 							
-							if(emptyPkg==false)
-								key=DigestUtils.shaHex(s.toString());
-//								System.out.println("The size of the message is: "+s.toString().length());
-							
-							/*update the hash map*/
-							if(dataTable.containsKey(key)){
-								System.out.print("Found match!! update counter! ");
-								dataTable.get(key).countPlus();
-								System.out.println("The item: "+key+": "+dataTable.get(key).toString());
-							}else{
-								dataTable.put(key, item);
-								System.out.print("Added item length: "+item.returnSize());
-								System.out.println(" The item: "+key+": "+dataTable.get(key).toString());
-							}
 								
 							skipByte=skipByte-item.returnSize()+thisLine.length()+2;
 //							httpPackageDetect(fin,skipByte);
-							item = new InfoItemSlot(null,0,1);
+							item=updateDataTable(emptyPkg, key,s,item);
 							break;
 						}else{
 						
@@ -158,6 +132,22 @@ public class DownloadPkg extends PackageAnalysis {
 			}
 		}
 
+	}
+	
+	private InfoItemSlot updateDataTable(boolean emptyPkg, String key,StringBuilder s,InfoItemSlot item){
+		if(emptyPkg==false)
+			key=DigestUtils.shaHex(s.toString());
+//			System.out.println("The size of the message is: "+s.toString().length());
+		
+		/*update the hash map*/
+		if(dataTable.containsKey(key)){
+			dataTable.get(key).countPlus();
+		}else{
+			dataTable.put(key, item);
+		}
+		/*Another http package followed*/
+//		httpPackageDetect(fin,skipByte+2);
+		return new InfoItemSlot(null,0,1);
 	}
 	
 	protected  void typeTableGen(){
