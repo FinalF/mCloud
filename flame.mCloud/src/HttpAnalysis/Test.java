@@ -2,13 +2,14 @@ package HttpAnalysis;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 
 
 public class Test {
 
-	public static void main(String args[]) throws FileNotFoundException{
+	public static void main(String args[]) throws IOException{
 		
 		File[] upFolder = new File("uploaddata").listFiles();
 		PrintWriter upOutputFile = new PrintWriter(new File("record/Overall_Upload.txt"));

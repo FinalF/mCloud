@@ -4,6 +4,7 @@ package HttpAnalysis;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
@@ -20,26 +21,28 @@ public class DownloadPkg extends PackageAnalysis {
 		super();
 	}
 
-	protected void fileScan(File f) throws FileNotFoundException{
+	protected void fileScan(File f) throws IOException{
 
 //		System.out.println("File name: "+f.getName());
-		
+		long fileSize=f.length();
+		System.out.println("The file size is: "+fileSize);
 		FileInputStream fin = new FileInputStream(f);
-		Scanner in = new Scanner(fin);
-		httpPackageDetect(in);
+
+		httpPackageDetect(fin,0);
 	}
 	
 	
-	private void httpPackageDetect(Scanner in){
+	private void httpPackageDetect(FileInputStream fin,long skipByte) throws IOException{
+		fin.skip(skipByte);
+		Scanner in = new Scanner(fin);
 		boolean chunkEncoding=false;
 		boolean emptyPkg=false;
 		boolean typeDefined=false;
-		boolean hasNext=false; //has another http pkg followed
 		String key=null;
-		if(!in.hasNextLine()){
-			endOfPkg=true;
-		}
-			
+//		if(!in.hasNextLine()){
+//			endOfPkg=true;
+//		}
+
 		InfoItemSlot item = new InfoItemSlot(null,0,1);
 		while(in.hasNextLine()){
 			/*Process the header*/
@@ -48,15 +51,13 @@ public class DownloadPkg extends PackageAnalysis {
 			String l=null;
 
 			if(!(l=in.nextLine().trim()).isEmpty()){
-				
-				if(l.contains(String.valueOf(Character.toString((char) 152)))) 
-					System.out.println("Multiple http pkgs!");
-				
+//				if(l.contains(String.valueOf(Character.toString((char) 152)))) 
+//					System.out.println("Multiple http pkgs!");
+				skipByte+=l.length()+1;
 				line=l.split(": ");
 				if(line[0].contains("Content-Length") && line.length>1){
 					//we record the length
-//					System.out.println("This line has : "+line.length+" parts");
-//					System.out.println("SIze is: "+line[1]);
+					System.out.println("SIze is: "+line[1]);
 					item.sizeUpdate(line[1]);
 					if(line[1].equals("0")){
 						if(typeDefined==false){
@@ -83,11 +84,16 @@ public class DownloadPkg extends PackageAnalysis {
 //					System.out.println("This package has used chunkencoding");
 				}
 			}else{
+				skipByte+=1;//The empty line
 //				System.out.println("Should be an empty line: "+in.nextLine()); //jump the blank line
 				/*Process the messagebody*/
+				System.out.println("The header size of the http pkg: "+skipByte);
+				skipByte+=item.returnSize();
+				System.out.println("The total size of the http pkg: "+skipByte);
 				StringBuilder s = new StringBuilder();
 				int sizeCount=0;
 				if(chunkEncoding==true){
+					System.out.println("chunkencoding!");
 					item.sizeUpdate(String.valueOf(Integer.parseInt(in.nextLine().trim(), 16)));//file length
 						while(in.hasNextLine() && !in.nextLine().trim().equals("0")){
 							String thisLine=in.nextLine();
@@ -96,40 +102,53 @@ public class DownloadPkg extends PackageAnalysis {
 						}
 						/*Another http package followed*/
 				}else{
-					while(in.hasNextLine() && (in.nextLine().length()+sizeCount)<=item.returnSize()){
-						String thisLine=in.nextLine();
-						s.append(thisLine.trim());
-						sizeCount+=thisLine.length();
-					}
-					/*Another http package followed*/
-					if(in.hasNextLine() && sizeCount+in.nextLine().length()>item.returnSize()){
-						hasNext=true;
-						String thisLine=in.nextLine();
-						int i=0;
-						for(;i<(item.returnSize()-sizeCount);i++){
-							s.append(thisLine.charAt(i));
+					System.out.println("No chunkencoding!");
+					String thisLine=null;
+					while(in.hasNextLine()){
+						thisLine=in.nextLine();
+						if(sizeCount+thisLine.length()>item.returnSize()){
+//							System.out.println("Last line length: "+thisLine.length());
+							int i=0;
+							for(;i<(item.returnSize()-sizeCount);i++){
+								s.append(thisLine.charAt(i));
+							}
+							sizeCount+=i;
+							System.out.println("1st pkg processed! File size: "+sizeCount);
+							
+							if(emptyPkg==false)
+								key=DigestUtils.shaHex(s.toString());
+								System.out.println("The size of the message is: "+s.toString().length());
+								/*update the hash map*/
+							if(dataTable.containsKey(key)){
+								dataTable.get(key).countPlus();
+							}else{
+								dataTable.put(key, item);
+							}
+								
+							skipByte=skipByte-item.returnSize()+thisLine.length()+2;
+							if(in.hasNextLine()) httpPackageDetect(fin,skipByte);
+							break;
+						}else{
+						
+							s.append(thisLine.trim());
+	//						System.out.println("CUrrent line length: "+thisLine.length());
+							sizeCount+=thisLine.length();
 						}
-						sizeCount+=i;
 					}
+//					System.out.println("Current msg body size: "+sizeCount);
+
 				}
 				
-				if(emptyPkg==false)
-				key=DigestUtils.shaHex(s.toString());
-//				System.out.println("The size of the message is: "+s.toString().length());
+
 //				System.out.println("THe hash value is: "+key);
 			}
 		}
 		
 
-			/*update the hash map*/
-			if(dataTable.containsKey(key)){
-				dataTable.get(key).countPlus();
-			}else{
-				dataTable.put(key, item);
-			}
+
 
 		
-//		if(hasNext=true) httpPackageDetect(in);
+//		if(in.hasNextLine()) httpPackageDetect(fin,skipByte,fileSize);
 	}
 	
 	protected  void typeTableGen(){

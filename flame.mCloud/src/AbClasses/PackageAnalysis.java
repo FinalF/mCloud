@@ -3,6 +3,7 @@ package AbClasses;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +26,7 @@ public abstract class PackageAnalysis {
 	}
 	
 	/*read in packages, return a hashmap contains all the information for analysis*/
-	protected abstract void fileScan(File f) throws FileNotFoundException;
+	protected abstract void fileScan(File f)  throws IOException;
 	
 	
 	
