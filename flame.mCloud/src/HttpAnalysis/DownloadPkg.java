@@ -23,9 +23,9 @@ public class DownloadPkg extends PackageAnalysis {
 
 	protected void fileScan(File f) throws IOException{
 
-//		System.out.println("File name: "+f.getName());
+		System.out.println("File name: "+f.getName());
 		long fileSize=f.length();
-		System.out.println("The file size is: "+fileSize);
+//		System.out.println("The file size is: "+fileSize);
 		FileInputStream fin = new FileInputStream(f);
 
 		httpPackageDetect(fin,0);
@@ -57,7 +57,7 @@ public class DownloadPkg extends PackageAnalysis {
 				line=l.split(": ");
 				if(line[0].contains("Content-Length") && line.length>1){
 					//we record the length
-					System.out.println("SIze is: "+line[1]);
+//					System.out.println("SIze is: "+line[1]);
 					item.sizeUpdate(line[1]);
 					if(line[1].equals("0")){
 						if(typeDefined==false){
@@ -87,46 +87,62 @@ public class DownloadPkg extends PackageAnalysis {
 				skipByte+=1;//The empty line
 //				System.out.println("Should be an empty line: "+in.nextLine()); //jump the blank line
 				/*Process the messagebody*/
-				System.out.println("The header size of the http pkg: "+skipByte);
+//				System.out.println("The header size of the http pkg: "+skipByte);
 				skipByte+=item.returnSize();
-				System.out.println("The total size of the http pkg: "+skipByte);
+//				System.out.println("The total size of the http pkg: "+skipByte);
 				StringBuilder s = new StringBuilder();
 				int sizeCount=0;
 				if(chunkEncoding==true){
-					System.out.println("chunkencoding!");
+//					System.out.println("chunkencoding!");
 					item.sizeUpdate(String.valueOf(Integer.parseInt(in.nextLine().trim(), 16)));//file length
 						while(in.hasNextLine() && !in.nextLine().trim().equals("0")){
 							String thisLine=in.nextLine();
 							s.append(thisLine.trim());
 							sizeCount+=thisLine.length();
 						}
+						if(emptyPkg==false)
+							key=DigestUtils.shaHex(s.toString());
+//							System.out.println("The size of the message is: "+s.toString().length());
+						
+						/*update the hash map*/
+						if(dataTable.containsKey(key)){
+							dataTable.get(key).countPlus();
+						}else{
+							dataTable.put(key, item);
+						}
 						/*Another http package followed*/
+						httpPackageDetect(fin,skipByte+2);
 				}else{
-					System.out.println("No chunkencoding!");
+//					System.out.println("No chunkencoding!");
 					String thisLine=null;
 					while(in.hasNextLine()){
 						thisLine=in.nextLine();
-						if(sizeCount+thisLine.length()>item.returnSize()){
+						if(sizeCount+thisLine.length()>=item.returnSize()){
 //							System.out.println("Last line length: "+thisLine.length());
 							int i=0;
 							for(;i<(item.returnSize()-sizeCount);i++){
 								s.append(thisLine.charAt(i));
 							}
 							sizeCount+=i;
-							System.out.println("1st pkg processed! File size: "+sizeCount);
 							
 							if(emptyPkg==false)
 								key=DigestUtils.shaHex(s.toString());
-								System.out.println("The size of the message is: "+s.toString().length());
-								/*update the hash map*/
+//								System.out.println("The size of the message is: "+s.toString().length());
+							
+							/*update the hash map*/
 							if(dataTable.containsKey(key)){
+								System.out.print("Found match!! update counter! ");
 								dataTable.get(key).countPlus();
+								System.out.println("The item: "+key+": "+dataTable.get(key).toString());
 							}else{
 								dataTable.put(key, item);
+								System.out.print("Added item length: "+item.returnSize());
+								System.out.println(" The item: "+key+": "+dataTable.get(key).toString());
 							}
 								
 							skipByte=skipByte-item.returnSize()+thisLine.length()+2;
-							if(in.hasNextLine()) httpPackageDetect(fin,skipByte);
+//							httpPackageDetect(fin,skipByte);
+							item = new InfoItemSlot(null,0,1);
 							break;
 						}else{
 						
@@ -135,20 +151,12 @@ public class DownloadPkg extends PackageAnalysis {
 							sizeCount+=thisLine.length();
 						}
 					}
-//					System.out.println("Current msg body size: "+sizeCount);
 
 				}
-				
 
-//				System.out.println("THe hash value is: "+key);
 			}
 		}
-		
 
-
-
-		
-//		if(in.hasNextLine()) httpPackageDetect(fin,skipByte,fileSize);
 	}
 	
 	protected  void typeTableGen(){

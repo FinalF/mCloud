@@ -25,7 +25,7 @@ public class Test {
 			D.fileScan(f);		
 		}
 		D.typeTableGen();
-//		D.tablePrint();
+		D.tablePrint();
 		D.overallResultOutput(downOutputFile,"download");
 		D.typeResultOutput(downOutputFile2,"downloadType");
 		

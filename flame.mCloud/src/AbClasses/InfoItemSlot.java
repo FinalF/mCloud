@@ -27,7 +27,7 @@ public class InfoItemSlot implements InfoItem{
 	
 	 public void countPlus(){
 	 	int count = Integer.parseInt(item[2]);
-	 	count++;
+	 	count+=1;
 	 	item[2]=String.valueOf(count);
 	 }
 	
