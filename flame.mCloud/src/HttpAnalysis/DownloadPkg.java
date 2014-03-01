@@ -111,7 +111,8 @@ public class DownloadPkg extends PackageAnalysis {
 							dataTable.put(key, item);
 						}
 						/*Another http package followed*/
-						httpPackageDetect(fin,skipByte+2);
+//						httpPackageDetect(fin,skipByte+2);
+						item = new InfoItemSlot(null,0,1);
 				}else{
 //					System.out.println("No chunkencoding!");
 					String thisLine=null;
