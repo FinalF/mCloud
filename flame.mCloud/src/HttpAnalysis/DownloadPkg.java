@@ -83,9 +83,10 @@ public class DownloadPkg extends PackageAnalysis {
 					chunkEncoding=true;
 //					System.out.println("This package has used chunkencoding");
 				}
+				System.out.println(l);
 			}else{
 				skipByte+=1;//The empty line
-//				System.out.println("Should be an empty line: "+in.nextLine()); //jump the blank line
+				System.out.println("Should be an empty line: "+l); //jump the blank line
 				/*Process the messagebody*/
 //				System.out.println("The header size of the http pkg: "+skipByte);
 				skipByte+=item.returnSize();
@@ -122,11 +123,11 @@ public class DownloadPkg extends PackageAnalysis {
 						}else{
 						
 							s.append(thisLine.trim());
-	//						System.out.println("CUrrent line length: "+thisLine.length());
+//							System.out.println("CUrrent line length: "+thisLine.length());
 							sizeCount+=thisLine.length();
 						}
 					}
-
+					item=updateDataTable(emptyPkg, key,s,item);
 				}
 
 			}
@@ -135,6 +136,7 @@ public class DownloadPkg extends PackageAnalysis {
 	}
 	
 	private InfoItemSlot updateDataTable(boolean emptyPkg, String key,StringBuilder s,InfoItemSlot item){
+		System.out.println("Processing item: "+item.toString());
 		if(emptyPkg==false)
 			key=DigestUtils.shaHex(s.toString());
 //			System.out.println("The size of the message is: "+s.toString().length());
