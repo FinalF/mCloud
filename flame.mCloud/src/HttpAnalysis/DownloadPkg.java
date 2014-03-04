@@ -95,6 +95,7 @@ public class DownloadPkg extends PackageAnalysis {
 				int sizeCount=0;
 				if(chunkEncoding==true){
 //					System.out.println("chunkencoding!");
+//					System.out.println("The size is: "+String.valueOf(Integer.parseInt(in.nextLine().trim(), 16)));
 					item.sizeUpdate(String.valueOf(Integer.parseInt(in.nextLine().trim(), 16)));//file length
 						while(in.hasNextLine() && !in.nextLine().trim().equals("0")){
 							String thisLine=in.nextLine();
@@ -102,6 +103,7 @@ public class DownloadPkg extends PackageAnalysis {
 							sizeCount+=thisLine.length();
 						}
 						item=updateDataTable(emptyPkg, key,s,item);
+						break;
 				}else{
 //					System.out.println("No chunkencoding!");
 					String thisLine=null;
@@ -136,7 +138,7 @@ public class DownloadPkg extends PackageAnalysis {
 	}
 	
 	private InfoItemSlot updateDataTable(boolean emptyPkg, String key,StringBuilder s,InfoItemSlot item){
-		System.out.println("Processing item: "+item.toString());
+//		System.out.println("Processing item: "+item.toString());
 		if(emptyPkg==false)
 			key=DigestUtils.shaHex(s.toString());
 //			System.out.println("The size of the message is: "+s.toString().length());
