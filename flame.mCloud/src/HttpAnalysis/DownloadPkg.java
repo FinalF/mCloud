@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 import java.util.Scanner;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -23,8 +24,7 @@ public class DownloadPkg extends PackageAnalysis {
 
 	protected void fileScan(File f) throws IOException{
 
-		System.out.println("File name: "+f.getName());
-		long fileSize=f.length();
+//		System.out.println("File name: "+f.getName());
 //		System.out.println("The file size is: "+fileSize);
 		FileInputStream fin = new FileInputStream(f);
 
@@ -83,10 +83,10 @@ public class DownloadPkg extends PackageAnalysis {
 					chunkEncoding=true;
 //					System.out.println("This package has used chunkencoding");
 				}
-				System.out.println(l);
+//				System.out.println(l);
 			}else{
 				skipByte+=1;//The empty line
-				System.out.println("Should be an empty line: "+l); //jump the blank line
+//				System.out.println("Should be an empty line: "+l); //jump the blank line
 				/*Process the messagebody*/
 //				System.out.println("The header size of the http pkg: "+skipByte);
 				skipByte+=item.returnSize();
@@ -137,6 +137,9 @@ public class DownloadPkg extends PackageAnalysis {
 
 	}
 	
+	
+	
+	
 	private InfoItemSlot updateDataTable(boolean emptyPkg, String key,StringBuilder s,InfoItemSlot item){
 //		System.out.println("Processing item: "+item.toString());
 		if(emptyPkg==false)
@@ -167,7 +170,15 @@ public class DownloadPkg extends PackageAnalysis {
 		super.resultOutput(outputFile, pkgType,typeTable);
 	}
 	
-	protected void tablePrint(){
-		super.tablePrint();
+	protected void tablePrint(Map<String,InfoItemSlot> table){
+		super.tablePrint(table);
+	}
+	
+	protected Map<String,InfoItemSlot> returnDataTable(){
+		return super.returnDataTable();
+	}
+	
+	protected Map<String,InfoItemSlot> returnTypeTable(){
+		return super.returnTypeTable();
 	}
 }

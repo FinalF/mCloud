@@ -55,15 +55,23 @@ public abstract class PackageAnalysis {
 	
 
 	
-	protected void tablePrint(){
-		for(String key: dataTable.keySet()){
+	protected void tablePrint(Map<String,InfoItemSlot> table){
+		for(String key: table.keySet()){
 			System.out.print(key);
 			System.out.print(":\t");
-			System.out.println(dataTable.get(key).toString());
+			System.out.println(table.get(key).toString());
 		}
 	}
 	
-	protected void resultOutput(PrintWriter outputFile, String pkgType, Map<String,InfoItemSlot> table){
+	protected Map<String,InfoItemSlot> returnDataTable(){
+		return dataTable;
+	}
+	
+	protected Map<String,InfoItemSlot> returnTypeTable(){
+		return typeTable;
+	}
+	
+ 	protected void resultOutput(PrintWriter outputFile, String pkgType, Map<String,InfoItemSlot> table){
 		outputFile.flush();
 		outputFile.println(keyTranslate(pkgType)+"\t\t\tType\t\t\tSize\t\t\tCount");
 		for(String key: table.keySet()){

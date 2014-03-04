@@ -5,7 +5,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.Map;
 import java.util.Scanner;
+
+import org.apache.commons.codec.digest.DigestUtils;
 
 
 import AbClasses.*;
@@ -20,6 +23,8 @@ public class UploadPkg  extends PackageAnalysis {
 	protected void fileScan(File f) throws FileNotFoundException{
 
 		String key=null;
+		boolean chunkEncoding=false;
+		boolean emptyPkg=false;
 		InfoItemSlot item = new InfoItemSlot(null,0,1);
 //		System.out.println("File name: "+f.getName());
 		
@@ -37,20 +42,92 @@ public class UploadPkg  extends PackageAnalysis {
 					item.typeUpdate(line[0]);
 					key=line[1];
 				}
+				
 				if(line[0].contains("Content-Length") && line.length>1){
 					//we record the length
 //					System.out.println("lentgh: "+line[1]);
 					item.sizeUpdate(line[1]);
+				}else if(line[0].contains("Transfer-Encoding")){
+					//transfer-encoding used, we need to extract length from the message body
+					chunkEncoding=true;
 				}
+			}else{
+//				System.out.println("Should be an empty line: "+l); //jump the blank line
+				/*Process the messagebody*/
+//				System.out.println("The header size of the http pkg: "+skipByte);
+//				System.out.println("The total size of the http pkg: "+skipByte);
+				StringBuilder s = new StringBuilder();
+				int sizeCount=0;
+				if(chunkEncoding==true){
+//					System.out.println("chunkencoding!");
+//					System.out.println("The size is: "+String.valueOf(Integer.parseInt(in.nextLine().trim(), 16)));
+					item.sizeUpdate(String.valueOf(Integer.parseInt(in.nextLine().trim(), 16)));//file length
+						while(in.hasNextLine() && !in.nextLine().trim().equals("0")){
+							String thisLine=in.nextLine();
+							s.append(thisLine.trim());
+							sizeCount+=thisLine.length();
+						}
+						item=updateDataTable(emptyPkg, key,s,item);
+						break;
+				}else{
+//					System.out.println("No chunkencoding!");
+					String thisLine=null;
+					while(in.hasNextLine()){
+						thisLine=in.nextLine();
+						if(sizeCount+thisLine.length()>=item.returnSize()){
+//							System.out.println("Last line length: "+thisLine.length());
+							int i=0;
+							for(;i<(item.returnSize()-sizeCount);i++){
+								s.append(thisLine.charAt(i));
+							}
+							sizeCount+=i;
+							
+//							httpPackageDetect(fin,skipByte);
+							item=updateDataTable(emptyPkg, key,s,item);
+							break;
+						}else{
+						
+							s.append(thisLine.trim());
+//							System.out.println("CUrrent line length: "+thisLine.length());
+							sizeCount+=thisLine.length();
+						}
+					}
+					item=updateDataTable(emptyPkg, key,s,item);
+				}
+
 			}
 		}
-		/*update the hash map*/
-		if(dataTable.containsKey(key)){
-			dataTable.get(key).countPlus();
-		}else{
-			dataTable.put(key, item);
-		}
 	}
+	
+		private InfoItemSlot updateDataTable(boolean emptyPkg, String key,StringBuilder s,InfoItemSlot item){
+//			System.out.println("Processing item: "+item.toString());
+			if(emptyPkg==false)
+				key=DigestUtils.shaHex(s.toString());
+//				System.out.println("The size of the message is: "+s.toString().length());
+			
+			/*update the hash map*/
+			if(dataTable.containsKey(key)){
+				dataTable.get(key).countPlus();
+			}else{
+				dataTable.put(key, item);
+			}
+			/*Another http package followed*/
+//			httpPackageDetect(fin,skipByte+2);
+			return new InfoItemSlot(null,0,1);
+		}
+		
+//		/*update the hash map*/
+//		if(dataTable.containsKey(key)){
+//			dataTable.get(key).countPlus();
+//		}else{
+//			dataTable.put(key, item);
+//		}
+	
+	
+	
+	
+	
+	
 	
 	protected  void typeTableGen(){
 		super.typeTableGen();
@@ -66,7 +143,14 @@ public class UploadPkg  extends PackageAnalysis {
 		super.resultOutput(outputFile, pkgType,typeTable);
 	}
 	
-	protected void tablePrint(){
-		super.tablePrint();
+	protected void tablePrint(Map<String,InfoItemSlot> table){
+		super.tablePrint(table);
+	}
+	protected Map<String,InfoItemSlot> returnDataTable(){
+		return super.returnDataTable();
+	}
+	
+	protected Map<String,InfoItemSlot> returnTypeTable(){
+		return super.returnTypeTable();
 	}
 }

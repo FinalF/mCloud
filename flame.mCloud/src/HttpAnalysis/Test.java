@@ -25,7 +25,7 @@ public class Test {
 			D.fileScan(f);		
 		}
 		D.typeTableGen();
-		D.tablePrint();
+		D.tablePrint(D.returnTypeTable());
 		D.overallResultOutput(downOutputFile,"download");
 		D.typeResultOutput(downOutputFile2,"downloadType");
 		
@@ -38,6 +38,7 @@ public class Test {
 		}
 //		U.tablePrint();
 		U.typeTableGen();
+		U.tablePrint(D.returnTypeTable());
 		U.overallResultOutput(upOutputFile,"upload");
 		U.typeResultOutput(upOutputFile2,"uploadType");
 		
