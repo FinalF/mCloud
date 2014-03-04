@@ -15,7 +15,8 @@ import AbClasses.*;
 
 
 public class DownloadPkg extends PackageAnalysis {
-//	Map<String,InfoItemSlot> dataTable = new HashMap<String,InfoItemSlot>();
+
+	int[] statusCodeRecord = new int[5];
 	
 	DownloadPkg(){
 		super();
@@ -38,9 +39,7 @@ public class DownloadPkg extends PackageAnalysis {
 		boolean emptyPkg=false;
 		boolean typeDefined=false;
 		String key=null;
-//		if(!in.hasNextLine()){
-//			endOfPkg=true;
-//		}
+		int lineCount=0;
 
 		InfoItemSlot item = new InfoItemSlot(null,0,1);
 		while(in.hasNextLine()){
@@ -48,17 +47,16 @@ public class DownloadPkg extends PackageAnalysis {
 //			System.out.println("This line has : "+line.length+" parts");
 			String[] line;
 			String l=null;
-			
+			lineCount++;
 
 			if(!(l=in.nextLine().trim()).isEmpty()){
-//				if(l.contains(String.valueOf(Character.toString((char) 152)))) 
-//					System.out.println("Multiple http pkgs!");
 				skipByte+=l.length()+1;
 				line=l.split(" ");
 				/*We filter those bad/error pkgs*/
-				if(line[1].charAt(0)=='1' || line[1].charAt(0)=='4' || 
-						line[1].charAt(0)=='5' && line.length>1)
-					break;
+				if(lineCount==1 &&  line.length>1)
+					if(Invalid(line[1].charAt(0)))
+						break;
+
 				if(line[0].contains("Content-Length") && line.length>1){
 					//we record the length
 //					System.out.println("SIze is: "+line[1]);
@@ -140,7 +138,14 @@ public class DownloadPkg extends PackageAnalysis {
 
 	}
 	
-	
+	private boolean Invalid(char h){
+		/*update the record*/
+		boolean invalid=false;
+		statusCodeRecord[Character.getNumericValue(h)-1]++;
+		if(h=='1' || h=='4' || h=='5')
+			invalid =true;
+		return invalid;
+	}
 	
 	
 	private InfoItemSlot updateDataTable(boolean emptyPkg, String key,StringBuilder s,InfoItemSlot item){
@@ -187,5 +192,12 @@ public class DownloadPkg extends PackageAnalysis {
 	
 	protected Map<String,InfoItemSlot> dupTable(){
 		return super.dupTable();
+	}
+	
+	public int[] returnStatusCodeRecord(){
+		for(int i=0; i<statusCodeRecord.length;i++){
+			System.out.println(i+"xx: "+ statusCodeRecord[i]);
+		}
+		return statusCodeRecord;
 	}
 }

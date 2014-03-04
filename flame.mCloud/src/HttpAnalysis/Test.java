@@ -28,6 +28,7 @@ public class Test {
 		System.out.println("*********Dup table:*********\n");
 		D.tablePrint(D.dupTable());
 		System.out.println("******************\n");
+		D.returnStatusCodeRecord();
 		D.overallResultOutput(downOutputFile,"download");
 		D.typeResultOutput(downOutputFile2,"downloadType");
 		
