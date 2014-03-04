@@ -3,7 +3,6 @@ package HttpAnalysis;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
@@ -180,5 +179,9 @@ public class DownloadPkg extends PackageAnalysis {
 	
 	protected Map<String,InfoItemSlot> returnTypeTable(){
 		return super.returnTypeTable();
+	}
+	
+	protected Map<String,InfoItemSlot> dupTable(){
+		return super.dupTable();
 	}
 }

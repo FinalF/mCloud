@@ -1,7 +1,6 @@
 package HttpAnalysis;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -26,6 +25,9 @@ public class Test {
 		}
 		D.typeTableGen();
 		D.tablePrint(D.returnTypeTable());
+		System.out.println("*********Dup table:*********\n");
+		D.tablePrint(D.dupTable());
+		System.out.println("******************\n");
 		D.overallResultOutput(downOutputFile,"download");
 		D.typeResultOutput(downOutputFile2,"downloadType");
 		
@@ -38,7 +40,10 @@ public class Test {
 		}
 //		U.tablePrint();
 		U.typeTableGen();
-		U.tablePrint(D.returnTypeTable());
+		U.tablePrint(U.returnTypeTable());
+		System.out.println("*********Dup table:*********\n");
+		U.tablePrint(U.dupTable());
+		System.out.println("******************\n");
 		U.overallResultOutput(upOutputFile,"upload");
 		U.typeResultOutput(upOutputFile2,"uploadType");
 		

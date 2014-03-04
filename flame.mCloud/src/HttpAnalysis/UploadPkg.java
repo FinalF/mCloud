@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.util.Map;
 import java.util.Scanner;
 
-import org.apache.commons.codec.digest.DigestUtils;
 
 
 import AbClasses.*;
@@ -38,9 +37,11 @@ public class UploadPkg  extends PackageAnalysis {
 			if(!(l=in.nextLine().trim()).isEmpty()){
 				line=l.split(" ");
 				if(line.length>2 && line[2].contains("HTTP/1.1")){
-//					System.out.println("URL: "+line[1]);
+//					System.out.println("Type: "+line[0]);
 					item.typeUpdate(line[0]);
+//					System.out.println("Type: "+item.returnType());
 					key=line[1];
+//					System.out.println("URL: "+key);
 				}
 				
 				if(line[0].contains("Content-Length") && line.length>1){
@@ -54,8 +55,6 @@ public class UploadPkg  extends PackageAnalysis {
 			}else{
 //				System.out.println("Should be an empty line: "+l); //jump the blank line
 				/*Process the messagebody*/
-//				System.out.println("The header size of the http pkg: "+skipByte);
-//				System.out.println("The total size of the http pkg: "+skipByte);
 				StringBuilder s = new StringBuilder();
 				int sizeCount=0;
 				if(chunkEncoding==true){
@@ -101,9 +100,6 @@ public class UploadPkg  extends PackageAnalysis {
 	
 		private InfoItemSlot updateDataTable(boolean emptyPkg, String key,StringBuilder s,InfoItemSlot item){
 //			System.out.println("Processing item: "+item.toString());
-			if(emptyPkg==false)
-				key=DigestUtils.shaHex(s.toString());
-//				System.out.println("The size of the message is: "+s.toString().length());
 			
 			/*update the hash map*/
 			if(dataTable.containsKey(key)){
@@ -111,17 +107,13 @@ public class UploadPkg  extends PackageAnalysis {
 			}else{
 				dataTable.put(key, item);
 			}
+//			System.out.println("Put item of type: "+item.returnType());
 			/*Another http package followed*/
 //			httpPackageDetect(fin,skipByte+2);
 			return new InfoItemSlot(null,0,1);
 		}
 		
-//		/*update the hash map*/
-//		if(dataTable.containsKey(key)){
-//			dataTable.get(key).countPlus();
-//		}else{
-//			dataTable.put(key, item);
-//		}
+
 	
 	
 	
@@ -152,5 +144,9 @@ public class UploadPkg  extends PackageAnalysis {
 	
 	protected Map<String,InfoItemSlot> returnTypeTable(){
 		return super.returnTypeTable();
+	}
+	
+	protected Map<String,InfoItemSlot> dupTable(){
+		return super.dupTable();
 	}
 }

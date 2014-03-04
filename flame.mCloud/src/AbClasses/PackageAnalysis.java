@@ -2,7 +2,6 @@ package AbClasses;
 
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -19,10 +18,13 @@ public abstract class PackageAnalysis {
 	/*define the behaviour for analysis for down/upload packages*/
 	protected  Map<String,InfoItemSlot> dataTable;
 	protected  Map<String,InfoItemSlot> typeTable;
+	protected  Map<String,InfoItemSlot> dupTable;
+	
 	
 	protected PackageAnalysis(){
 		dataTable = new HashMap<String,InfoItemSlot>();
 		typeTable = new HashMap<String,InfoItemSlot>();
+		dupTable = new HashMap<String,InfoItemSlot>();
 	}
 	
 	/*read in packages, return a hashmap contains all the information for analysis*/
@@ -37,10 +39,12 @@ public abstract class PackageAnalysis {
 		for(String key: dataTable.keySet()){
 				/*This http transanction happens more than once*/
 				String typeType = dataTable.get(key).returnType();
+				System.out.println("Pcik out record with type of: "+typeType);
 				int typeCount = dataTable.get(key).returnCount();
 				int typeSize = typeCount*dataTable.get(key).returnSize();
 				
 				InfoItemSlot item = new InfoItemSlot(typeType,typeSize,typeCount);
+				/*generate the type-based table*/
 				if(!typeTable.containsKey(typeType)){
 					/*update the dupTable*/
 					typeTable.put(typeType,item);
@@ -49,11 +53,28 @@ public abstract class PackageAnalysis {
 					typeTable.get(typeType).sizePlus(typeSize);
 					typeTable.get(typeType).countPlus(typeCount);
 				}
-			
+				/*generate the type-based dup table*/
+				
+				if(typeCount>1){ 
+					/*we only count the unique part!*/
+					typeCount--;
+					typeSize-=dataTable.get(key).returnSize();
+					InfoItemSlot dupItem = new InfoItemSlot(typeType,typeSize,typeCount);
+					if(!dupTable.containsKey(typeType)){
+						/*update the dupTable*/
+						dupTable.put(typeType,dupItem);
+		
+					}else{
+						dupTable.get(typeType).sizePlus(typeSize);
+						dupTable.get(typeType).countPlus(typeCount);
+					}
+				}
 		}
 	}
 	
-
+	protected  void dupTableGen(){
+	
+	}
 	
 	protected void tablePrint(Map<String,InfoItemSlot> table){
 		for(String key: table.keySet()){
@@ -69,6 +90,10 @@ public abstract class PackageAnalysis {
 	
 	protected Map<String,InfoItemSlot> returnTypeTable(){
 		return typeTable;
+	}
+	
+	protected Map<String,InfoItemSlot> dupTable(){
+		return dupTable;
 	}
 	
  	protected void resultOutput(PrintWriter outputFile, String pkgType, Map<String,InfoItemSlot> table){
