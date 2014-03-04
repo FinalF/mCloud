@@ -48,12 +48,17 @@ public class DownloadPkg extends PackageAnalysis {
 //			System.out.println("This line has : "+line.length+" parts");
 			String[] line;
 			String l=null;
+			
 
 			if(!(l=in.nextLine().trim()).isEmpty()){
 //				if(l.contains(String.valueOf(Character.toString((char) 152)))) 
 //					System.out.println("Multiple http pkgs!");
 				skipByte+=l.length()+1;
-				line=l.split(": ");
+				line=l.split(" ");
+				/*We filter those bad/error pkgs*/
+				if(line[1].charAt(0)=='1' || line[1].charAt(0)=='4' || 
+						line[1].charAt(0)=='5' && line.length>1)
+					break;
 				if(line[0].contains("Content-Length") && line.length>1){
 					//we record the length
 //					System.out.println("SIze is: "+line[1]);
@@ -74,9 +79,7 @@ public class DownloadPkg extends PackageAnalysis {
 					String[] contentType = line[1].toString().split(";");
 					item.typeUpdate(contentType[0]);
 //					System.out.println("Type is: "+contentType[0]);
-//					if(emptyPkg==true) break;
-				
-					
+//					if(emptyPkg==true) break;									
 				}else if(line[0].contains("Transfer-Encoding")){
 					//transfer-encoding used, we need to extract length from the message body
 					chunkEncoding=true;
@@ -84,6 +87,7 @@ public class DownloadPkg extends PackageAnalysis {
 				}
 //				System.out.println(l);
 			}else{
+
 				skipByte+=1;//The empty line
 //				System.out.println("Should be an empty line: "+l); //jump the blank line
 				/*Process the messagebody*/

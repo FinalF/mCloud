@@ -36,7 +36,7 @@ public class UploadPkg  extends PackageAnalysis {
 			String l=null;
 			if(!(l=in.nextLine().trim()).isEmpty()){
 				line=l.split(" ");
-				if(line.length>2 && line[2].contains("HTTP/1.1")){
+				if(line.length>2 && line[2].contains("HTTP/1")){
 //					System.out.println("Type: "+line[0]);
 					item.typeUpdate(line[0]);
 //					System.out.println("Type: "+item.returnType());

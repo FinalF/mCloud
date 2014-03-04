@@ -39,7 +39,7 @@ public abstract class PackageAnalysis {
 		for(String key: dataTable.keySet()){
 				/*This http transanction happens more than once*/
 				String typeType = dataTable.get(key).returnType();
-				System.out.println("Pcik out record with type of: "+typeType);
+//				System.out.println("Pcik out record with type of: "+typeType);
 				int typeCount = dataTable.get(key).returnCount();
 				int typeSize = typeCount*dataTable.get(key).returnSize();
 				
@@ -71,10 +71,7 @@ public abstract class PackageAnalysis {
 				}
 		}
 	}
-	
-	protected  void dupTableGen(){
-	
-	}
+
 	
 	protected void tablePrint(Map<String,InfoItemSlot> table){
 		for(String key: table.keySet()){
