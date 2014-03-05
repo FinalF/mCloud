@@ -89,7 +89,7 @@ public abstract class PackageAnalysis {
 		return typeTable;
 	}
 	
-	protected Map<String,InfoItemSlot> dupTable(){
+	protected Map<String,InfoItemSlot> returnDupTable(){
 		return dupTable;
 	}
 	

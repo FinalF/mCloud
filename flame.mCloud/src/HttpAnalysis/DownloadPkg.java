@@ -168,15 +168,20 @@ public class DownloadPkg extends PackageAnalysis {
 	protected  void typeTableGen(){
 		super.typeTableGen();
 	}
-	protected void	 overallResultOutput(PrintWriter outputFile, String pkgType){
-		System.out.println("Download Table size: "+dataTable.size());
-		super.resultOutput(outputFile, pkgType,dataTable);
+	protected void	 resultOutput(PrintWriter outputFile, String pkgType,Map<String,InfoItemSlot> table){
+//		System.out.println("Download Table size: "+table.size());
+		super.resultOutput(outputFile, pkgType,table);
 	}
 	
-	protected void	 typeResultOutput(PrintWriter outputFile, String pkgType){
-		System.out.println("Download Type Table size: "+typeTable.size());
-		super.resultOutput(outputFile, pkgType,typeTable);
+	protected void pkgTypeOutput(PrintWriter outputFile){
+		outputFile.flush();
+		outputFile.println("The response type:  #");
+		for(int i=0; i<statusCodeRecord.length;i++){
+			outputFile.println(i+"xx: "+ statusCodeRecord[i]);
+		}
+		outputFile.close();
 	}
+
 	
 	protected void tablePrint(Map<String,InfoItemSlot> table){
 		super.tablePrint(table);
@@ -190,8 +195,8 @@ public class DownloadPkg extends PackageAnalysis {
 		return super.returnTypeTable();
 	}
 	
-	protected Map<String,InfoItemSlot> dupTable(){
-		return super.dupTable();
+	protected Map<String,InfoItemSlot> returnDupTable(){
+		return super.returnDupTable();
 	}
 	
 	public int[] returnStatusCodeRecord(){
