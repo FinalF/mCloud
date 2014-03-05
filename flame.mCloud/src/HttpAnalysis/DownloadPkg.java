@@ -24,7 +24,7 @@ public class DownloadPkg extends PackageAnalysis {
 
 	protected void fileScan(File f) throws IOException{
 
-//		System.out.println("File name: "+f.getName());
+		System.out.println("File name: "+f.getName());
 //		System.out.println("The file size is: "+fileSize);
 		FileInputStream fin = new FileInputStream(f);
 
@@ -53,10 +53,10 @@ public class DownloadPkg extends PackageAnalysis {
 				skipByte+=l.length()+1;
 				line=l.split(" ");
 				/*We filter those bad/error pkgs*/
-				if(lineCount==1 &&  line.length>1)
+				if(lineCount==1 &&  line.length>1){
 					if(Invalid(line[1].charAt(0)))
 						break;
-
+				}
 				if(line[0].contains("Content-Length") && line.length>1){
 					//we record the length
 //					System.out.println("SIze is: "+line[1]);
@@ -141,9 +141,14 @@ public class DownloadPkg extends PackageAnalysis {
 	private boolean Invalid(char h){
 		/*update the record*/
 		boolean invalid=false;
-		statusCodeRecord[Character.getNumericValue(h)-1]++;
-		if(h=='1' || h=='4' || h=='5')
+//		System.out.println("This pkg type is: "+h);
+		if((Character.getNumericValue(h)-1)<1 || (Character.getNumericValue(h)-1)>5){
 			invalid =true;
+		}else{
+			statusCodeRecord[Character.getNumericValue(h)-1]++;
+			if(h=='1' || h=='4' || h=='5')
+				invalid =true;
+		}
 		return invalid;
 	}
 	
