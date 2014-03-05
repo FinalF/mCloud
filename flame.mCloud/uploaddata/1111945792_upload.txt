@@ -1,5 +1,0 @@
-GET /nc/last.do?1393362934675 HTTP/1.1
-Host: p.3g.163.com
-Connection: Keep-Alive
-User-Agent: NTES Android
-

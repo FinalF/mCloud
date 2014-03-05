@@ -1,5 +1,0 @@
-GET /madr?app=7A16FBB6&platform=android&category=STARTUP&location=1 HTTP/1.1
-Cookie: wifi=1;sdk=1.1
-Host: g1.163.com
-Connection: Keep-Alive
-
