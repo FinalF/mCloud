@@ -36,13 +36,14 @@ public class DownloadPkg extends PackageAnalysis {
 		fin.skip(skipByte);
 		Scanner in = new Scanner(fin);
 		boolean chunkEncoding=false;
+		boolean chunkProcessed=false;
 		boolean emptyPkg=false;
 		boolean typeDefined=false;
 		String key=null;
 		int lineCount=0;
 
 		InfoItemSlot item = new InfoItemSlot(null,0,1);
-		while(in.hasNextLine()){
+		while(in.hasNextLine() && chunkEncoding!=true && chunkProcessed!=true){
 			/*Process the header*/
 //			System.out.println("This line has : "+line.length+" parts");
 			String[] line;
@@ -103,6 +104,7 @@ public class DownloadPkg extends PackageAnalysis {
 							s.append(thisLine.trim());
 							sizeCount+=thisLine.length();
 						}
+						chunkProcessed=true;
 						item=updateDataTable(emptyPkg, key,s,item);
 						break;
 				}else{
