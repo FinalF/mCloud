@@ -76,7 +76,7 @@ public class DownloadPkg extends PackageAnalysis {
 				}else if(line[0].contains("Content-Type") && line.length>1){
 					typeDefined=true; //it has a type
 					String[] contentType = line[1].toString().split(";");
-					item.typeUpdate(contentType[0]);
+					item.typeUpdate(contentType[0]);	
 //					System.out.println("Type is: "+contentType[0]);
 //					if(emptyPkg==true) break;									
 				}else if(line[0].contains("Transfer-Encoding")){
@@ -184,7 +184,7 @@ public class DownloadPkg extends PackageAnalysis {
 		outputFile.flush();
 		outputFile.println("The response type:  #");
 		for(int i=0; i<statusCodeRecord.length;i++){
-			outputFile.println(i+"xx: "+ statusCodeRecord[i]);
+			outputFile.println((i+1)+"xx: "+ statusCodeRecord[i]);
 		}
 		outputFile.close();
 	}
@@ -208,7 +208,7 @@ public class DownloadPkg extends PackageAnalysis {
 	
 	public int[] returnStatusCodeRecord(){
 		for(int i=0; i<statusCodeRecord.length;i++){
-			System.out.println(i+"xx: "+ statusCodeRecord[i]);
+			System.out.println((i+1)+"xx: "+ statusCodeRecord[i]);
 		}
 		return statusCodeRecord;
 	}

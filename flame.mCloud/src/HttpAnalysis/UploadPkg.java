@@ -20,7 +20,7 @@ public class UploadPkg  extends PackageAnalysis {
 	}
 
 	protected void fileScan(File f) throws FileNotFoundException{
-
+		//Do not consider the size of pkgs
 		String key=null;
 		boolean chunkEncoding=false;
 		boolean emptyPkg=false;
@@ -41,64 +41,66 @@ public class UploadPkg  extends PackageAnalysis {
 					item.typeUpdate(line[0]);
 //					System.out.println("Type: "+item.returnType());
 					key=line[1];
+					updateDataTable(key,item);
 //					System.out.println("URL: "+key);
 				}
 				
-				if(line[0].contains("Content-Length") && line.length>1){
-					//we record the length
-//					System.out.println("lentgh: "+line[1]);
-					item.sizeUpdate(line[1]);
-				}else if(line[0].contains("Transfer-Encoding")){
-					//transfer-encoding used, we need to extract length from the message body
-					chunkEncoding=true;
-				}
-			}else{
-//				System.out.println("Should be an empty line: "+l); //jump the blank line
-				/*Process the messagebody*/
-				StringBuilder s = new StringBuilder();
-				int sizeCount=0;
-				if(chunkEncoding==true){
-//					System.out.println("chunkencoding!");
-//					System.out.println("The size is: "+String.valueOf(Integer.parseInt(in.nextLine().trim(), 16)));
-					item.sizeUpdate(String.valueOf(Integer.parseInt(in.nextLine().trim(), 16)));//file length
-						while(in.hasNextLine() && !in.nextLine().trim().equals("0")){
-							String thisLine=in.nextLine();
-							s.append(thisLine.trim());
-							sizeCount+=thisLine.length();
-						}
-						item=updateDataTable(emptyPkg, key,s,item);
-						break;
-				}else{
-//					System.out.println("No chunkencoding!");
-					String thisLine=null;
-					while(in.hasNextLine()){
-						thisLine=in.nextLine();
-						if(sizeCount+thisLine.length()>=item.returnSize()){
-//							System.out.println("Last line length: "+thisLine.length());
-							int i=0;
-							for(;i<(item.returnSize()-sizeCount);i++){
-								s.append(thisLine.charAt(i));
-							}
-							sizeCount+=i;
-							
-//							httpPackageDetect(fin,skipByte);
-							item=updateDataTable(emptyPkg, key,s,item);
-							break;
-						}else{
-						
-							s.append(thisLine.trim());
-//							System.out.println("CUrrent line length: "+thisLine.length());
-							sizeCount+=thisLine.length();
-						}
-					}
-					item=updateDataTable(emptyPkg, key,s,item);
-				}
-
+//				if(line[0].contains("Content-Length") && line.length>1){
+//					//we record the length
+////					System.out.println("lentgh: "+line[1]);
+//					item.sizeUpdate(line[1]);
+//				}else if(line[0].contains("Transfer-Encoding")){
+//					//transfer-encoding used, we need to extract length from the message body
+//					chunkEncoding=true;
+//				}
+//			}else{
+////				System.out.println("Should be an empty line: "+l); //jump the blank line
+//				/*Process the messagebody*/
+//				StringBuilder s = new StringBuilder();
+//				int sizeCount=0;
+//				if(chunkEncoding==true){
+////					System.out.println("chunkencoding!");
+////					System.out.println("The size is: "+String.valueOf(Integer.parseInt(in.nextLine().trim(), 16)));
+//					item.sizeUpdate(String.valueOf(Integer.parseInt(in.nextLine().trim(), 16)));//file length
+//						while(in.hasNextLine() && !in.nextLine().trim().equals("0")){
+//							String thisLine=in.nextLine();
+//							s.append(thisLine.trim());
+//							sizeCount+=thisLine.length();
+//						}
+//						item=updateDataTable(emptyPkg, key,s,item);
+//						break;
+//				}else{
+////					System.out.println("No chunkencoding!");
+//					String thisLine=null;
+//					while(in.hasNextLine()){
+//						thisLine=in.nextLine();
+////						System.out.println("1st line of content is: "+thisLine);
+//						if(!thisLine.isEmpty() && sizeCount+thisLine.length()>=item.returnSize()){
+////							System.out.println("Last line length: "+thisLine.length());
+//							int i=0;
+//							for(;i<(item.returnSize()-sizeCount);i++){
+//								s.append(thisLine.charAt(i));
+//							}
+//							sizeCount+=i;
+//							
+////							httpPackageDetect(fin,skipByte);
+//							item=updateDataTable(emptyPkg, key,s,item);
+//							break;
+//						}else{
+//						
+//							s.append(thisLine.trim());
+////							System.out.println("CUrrent line length: "+thisLine.length());
+//							sizeCount+=thisLine.length();
+//						}
+//					}
+//					item=updateDataTable(emptyPkg, key,s,item);
+//				}
+//
 			}
 		}
 	}
 	
-		private InfoItemSlot updateDataTable(boolean emptyPkg, String key,StringBuilder s,InfoItemSlot item){
+		private InfoItemSlot updateDataTable(String key,InfoItemSlot item){
 //			System.out.println("Processing item: "+item.toString());
 			
 			/*update the hash map*/
