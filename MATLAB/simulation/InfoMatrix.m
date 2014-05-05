@@ -16,15 +16,13 @@ infoMatrix=zeros(6,n);
 
 %step1: generate coordinates
 infoMatrix(1,:)=2*pi*rand(1,n);
-infoMatrix(4,:)=R*rand(1,n);
+infoMatrix(4,:)=R/15+14*R/15*rand(1,n);
 infoMatrix(2,:)=infoMatrix(4,:).*cos(infoMatrix(1,:));
 infoMatrix(3,:)=infoMatrix(4,:).*sin(infoMatrix(1,:));
 
-plot(0,0,'-hr','MarkerSize',12)
+plot(0,0,'-hr','MarkerSize',8)
 hold on
 for i=1:n
 plot(infoMatrix(2,i),infoMatrix(3,i),'o','MarkerSize',3,'MarkerFaceColor','auto')
 hold on
 end
-
-pdecirc(0,0,R)
