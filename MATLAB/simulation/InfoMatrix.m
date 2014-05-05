@@ -20,6 +20,7 @@ infoMatrix(4,:)=R/15+14*R/15*rand(1,n);
 infoMatrix(2,:)=infoMatrix(4,:).*cos(infoMatrix(1,:));
 infoMatrix(3,:)=infoMatrix(4,:).*sin(infoMatrix(1,:));
 infoMatrix(5,:)=(infoMatrix(4,:)-1).*rand(1,n)+1;
+infoMatrix(6,:)=infoMatrix(5,:)./infoMatrix(4,:).^2;
 
 
 
