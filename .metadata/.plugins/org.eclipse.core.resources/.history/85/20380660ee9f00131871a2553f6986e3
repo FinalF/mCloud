@@ -1,0 +1,26 @@
+package HttpAnalysis;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
+public class Test {
+
+	public static void main(String args[]) throws FileNotFoundException{
+		
+		File[] folder = new File("data").listFiles();
+		PrintWriter outputFile = new PrintWriter(new File("record/HashmapRecord.txt"));
+		
+		DownloadPkg D = new DownloadPkg();
+		System.out.println("Package #: "+folder.length);
+		int i=0;
+		for(File f:folder){
+			System.out.println("Processing: "+(++i));
+			D.fileScan(f);
+			
+		}
+		D.resultOutput(outputFile,"download");
+	}
+	
+	
+}

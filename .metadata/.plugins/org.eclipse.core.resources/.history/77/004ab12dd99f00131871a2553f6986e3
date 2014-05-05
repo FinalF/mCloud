@@ -1,0 +1,22 @@
+package AbClasses;
+
+
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
+
+
+
+
+
+public abstract class HTTPAnalysis {
+	/*define the behaviour for analysis for down/upload packages*/
+	Map<String,InfoItemSlot> dataTable = new HashMap<String,InfoItemSlot>();
+	
+	void resultOutput(PrintWriter outputFile){
+		
+		for(String key: dataTable.keySet()){
+			
+		}
+	}
+}

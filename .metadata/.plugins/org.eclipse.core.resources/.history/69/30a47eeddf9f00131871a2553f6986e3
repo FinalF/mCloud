@@ -1,0 +1,34 @@
+package HttpAnalysis;
+
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
+
+import AbClasses.InfoItemSlot;
+import AbClasses.PackageAnalysis;
+
+public class DowloadPkg extends PackageAnalysis {
+	Map<String,InfoItemSlot> dataTable = new HashMap<String,InfoItemSlot>();
+	
+	DownloadPkg(){
+		
+	}
+	
+	 void fileScan(File f){
+		
+	}
+	
+	
+	
+	 void resultOutput(PrintWriter outputFile){
+		outputFile.flush();
+		outputFile.println("Key\tType\tSize\tCount");
+		for(String key: dataTable.keySet()){
+			outputFile.print("key");
+			outputFile.print(",");
+			outputFile.println(dataTable.get(key).toString());
+		}
+	}
+
+}

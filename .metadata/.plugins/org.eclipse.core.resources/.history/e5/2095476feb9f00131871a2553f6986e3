@@ -1,0 +1,13 @@
+package HttpAnalysis;
+
+
+import java.util.HashMap;
+import java.util.Map;
+
+import AbClasses.*;
+
+public class UploadPkg  extends PackageAnalysis {
+	Map<String,InfoItemSlot> dataTable = new HashMap<String,InfoItemSlot>();
+	
+
+}

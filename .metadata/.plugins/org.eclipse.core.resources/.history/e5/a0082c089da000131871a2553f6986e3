@@ -1,0 +1,91 @@
+package AbClasses;
+
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
+
+
+
+
+
+public abstract class PackageAnalysis {
+	
+
+	
+	/*define the behaviour for analysis for down/upload packages*/
+	protected static Map<String,InfoItemSlot> dataTable = new HashMap<String,InfoItemSlot>();
+	
+	
+	protected PackageAnalysis(){
+		
+	}
+	
+	/*read in packages, return a hashmap contains all the information for analysis*/
+	protected abstract void fileScan(File f) throws FileNotFoundException;
+	
+	
+	
+	/*check dataTable, merge them based on transaction type.
+	 * Construct another hashmap to record it*/
+	protected  Map<String,InfoItemSlot>typeTableGen(){
+		Map<String,InfoItemSlot> typeTable = new HashMap<String,InfoItemSlot>();
+		for(String key: dataTable.keySet()){
+
+				/*This http transanction happens more than once*/
+				String typeType = dataTable.get(key).returnType();
+				int typeCount = dataTable.get(key).returnCount();
+				int typeSize = typeCount*dataTable.get(key).returnSize();
+				
+				InfoItemSlot item = new InfoItemSlot(typeType,typeSize,typeCount);
+				if(!typeTable.containsKey(typeType)){
+					/*update the dupTable*/
+					typeTable.put(typeType,item);
+				}else{
+					typeTable.get(typeType).sizePlus(typeSize);
+					typeTable.get(typeType).countPlus(typeCount);
+				}
+			
+		}
+		return typeTable;
+	}
+	
+
+	
+	protected void tablePrint(){
+		for(String key: dataTable.keySet()){
+			System.out.print(key);
+			System.out.print(":\t");
+			System.out.println(dataTable.get(key).toString());
+		}
+	}
+	
+	protected void resultOutput(PrintWriter outputFile, String pkgType){
+		outputFile.flush();
+		outputFile.println(keyTranslate(pkgType)+"\t\t\tType\t\t\tSize\t\t\tCount");
+		for(String key: dataTable.keySet()){
+			outputFile.print(key);
+			outputFile.print("\t,\t");
+			outputFile.println(dataTable.get(key).toString());
+		}
+		outputFile.close();
+	}
+
+	private String keyTranslate(String pkgType){
+		String key = null;
+		if(pkgType.equals("download")){
+			key = "Hash";
+		}else if(pkgType.equals("upload")){
+			key = "URL";
+		}else if(pkgType.equals("uploadType")){
+			key = "Upload Type";
+		}else if(pkgType.equals("DownloadType")){
+			key = "Download Type";
+		}else{
+			key = "error";
+		}
+		return key;
+	}
+}

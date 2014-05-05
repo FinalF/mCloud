@@ -1,0 +1,13 @@
+package AbClasses;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import Interfaces.InfoItem;
+
+
+
+public abstract class HTTPAnalysis implements InfoItem{
+	/*define the behaviour for analysis for down/upload packages*/
+	Map<String,InfoItem> dataTable = new HashMap<String,InfoItem>();
+}

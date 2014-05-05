@@ -1,0 +1,25 @@
+package Interfaces;
+
+public interface InfoItem {
+
+	/*Define the method the information items should provide*/
+	
+	
+
+	public void countPlus();
+	public void countPlus(int count);
+	public void sizeUpdate(String size);	
+	public void sizePlus(int size); //add size to current size
+	public void typeUpdate(String type);
+	
+	public String returnType(); 
+		/*Download: html/text  video/stream, etc
+		 * Upload: GET/HEAD/Post...etc*/
+	public int returnCount();
+		/*how many times such package appears*/
+	public int returnSize();
+		/*size of the message in this package*/
+	public String toString();
+		/*output the string*/
+	
+}

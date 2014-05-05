@@ -1,0 +1,62 @@
+package HttpAnalysis;
+
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+import org.apache.commons.codec.digest.DigestUtils;
+
+
+import AbClasses.*;
+
+
+public class DownloadPkg extends PackageAnalysis {
+	Map<String,InfoItemSlot> dataTable = new HashMap<String,InfoItemSlot>();
+	
+	DownloadPkg(){
+		super();
+	}
+
+	protected void fileScan(File f) throws FileNotFoundException{
+		boolean chunkEncoding=false;
+		String key=null;
+		InfoItemSlot item = new InfoItemSlot(null,0,1);
+		Scanner in = new Scanner(f);
+		while(in.hasNextLine()){
+			String[] line = in.nextLine().split(" ");
+			/*Process the header*/
+			if(line!=null){
+				if(line[0].contains("Content-Length")){
+					//we record the length
+					item.sizeUpdate(line[1]);
+					if(line[1].equals("0")){
+						item.typeUpdate("Empty");
+						key="emptyDownloadPkg";
+						break;
+					}
+				}else if(line[0].contains("Transfer-Encoding")){
+					//transfer-encoding used, we need to extract length from the message body
+					chunkEncoding=true;
+				}
+			}else{
+			/*Process the messagebody*/
+				StringBuilder s = new StringBuilder();
+				if(chunkEncoding==true){
+					item.sizeUpdate(String.valueOf(Integer.parseInt(in.nextLine(), 16)));//file length
+						while(!in.nextLine().equals("0\r\n")){
+							s.append(in.nextLine());
+						}
+				}else{
+					while(in.nextLine()!=null){
+						s.append(in.nextLine());
+					}
+				}
+				key=DigestUtils.shaHex(s.toString());
+			}
+		}
+	}
+
+}

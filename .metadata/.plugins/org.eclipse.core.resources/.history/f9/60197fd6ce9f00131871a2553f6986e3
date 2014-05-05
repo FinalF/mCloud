@@ -1,0 +1,22 @@
+package AbClasses;
+
+import Interfaces.InfoItem;
+
+abstract class InfoItemSlot implements InfoItem{
+	private String type=null;
+	private int count=0;
+	private int size=0;
+	
+	 public String returnType(){
+		return type;
+	 }
+
+	 public int returnCount(){
+		 return count;
+	 }
+
+	 public int returnSize(){
+		 return size;
+	 }
+
+}

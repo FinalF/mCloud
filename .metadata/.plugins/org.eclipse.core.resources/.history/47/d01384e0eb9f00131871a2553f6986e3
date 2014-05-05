@@ -1,0 +1,10 @@
+package HttpAnalysis;
+
+import java.io.File;
+
+public class Test {
+
+	File[] folder = new File("data").listFiles();
+	
+	
+}

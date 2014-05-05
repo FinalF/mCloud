@@ -1,0 +1,19 @@
+package AbClasses;
+
+import Interfaces.InfoItem;
+
+abstract class InfoItemSlot implements InfoItem{
+	private String type=null;
+	private int count=0;
+	private int size=0;
+	
+	 String returnType(){
+		return type;
+	}
+	/*Download: html/text  video/stream, etc
+	 * Upload: GET/HEAD/Post...etc*/
+	private int returnCount();
+	/*how many times such package appears*/
+	private int returnSize();
+	/*size of the message in this package*/
+}
