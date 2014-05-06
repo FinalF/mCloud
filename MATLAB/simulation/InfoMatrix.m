@@ -1,3 +1,5 @@
+function [matrix,k] = InfoMatrix(distribution)
+
 %To generate the information of devices
 %1. de_i: the degree 
 %2 x_i: the coordinate
@@ -16,10 +18,19 @@ k=n/capacity;
 infoMatrix=zeros(6,n);
 
 
-
+if strcmp(distribution,'random')
 %step1: generate information
 infoMatrix(1,:)=2*pi*rand(1,n);
 infoMatrix(4,:)=R/15+14*R/15*rand(1,n);
+% infoMatrix(2,:)=infoMatrix(4,:).*cos(infoMatrix(1,:));
+% infoMatrix(3,:)=infoMatrix(4,:).*sin(infoMatrix(1,:));
+% infoMatrix(5,:)=(infoMatrix(4,:).^s-1).*rand(1,n)+1;
+% infoMatrix(6,:)=infoMatrix(5,:)./infoMatrix(4,:).^2;
+elseif strcmp(distribution,'normal')
+infoMatrix(1,1:n/2)=pi+pi/6*randn(1,n/2);
+infoMatrix(1,n/2+1:n)=pi/6+pi/6*randn(1,n/2);
+infoMatrix(4,:)=R/2+R/6*randn(1,n);
+end
 infoMatrix(2,:)=infoMatrix(4,:).*cos(infoMatrix(1,:));
 infoMatrix(3,:)=infoMatrix(4,:).*sin(infoMatrix(1,:));
 infoMatrix(5,:)=(infoMatrix(4,:).^s-1).*rand(1,n)+1;
@@ -27,13 +38,12 @@ infoMatrix(6,:)=infoMatrix(5,:)./infoMatrix(4,:).^2;
 
 
 
-
-plot(0,0,'-hr','MarkerSize',8)
-hold on
-for i=1:n
-plot(infoMatrix(2,i),infoMatrix(3,i),'o','MarkerSize',3,'MarkerFaceColor','auto')
-hold on
-end
+% plot(0,0,'-hr','MarkerSize',8)
+% hold on
+% for i=1:n
+% plot(infoMatrix(2,i),infoMatrix(3,i),'o','MarkerSize',3,'MarkerFaceColor','auto')
+% hold on
+% end
 
 %step2: sort the matrix, the last k nodes are group leader,mark them out
 [r, c] = size(infoMatrix); 
@@ -42,12 +52,15 @@ tmp(1,:) = infoMatrix(r,:);
 tmp(r,:) = infoMatrix(1,:); 
 infoMatrix=tmp;
 
-sortMatrix=sortrows(infoMatrix')';
+matrix=sortrows(infoMatrix')';
 
-for i=n-k+1:n
-plot(sortMatrix(2,i),sortMatrix(3,i),'+r','MarkerSize',3)
-hold on
-end
+% for i=n-k+1:n
+% plot(sortMatrix(2,i),sortMatrix(3,i),'+r','MarkerSize',3)
+% hold on
+% end
 
 %step3: calculate the stats: how much can we save? Assume that each device
 %has an identical unit load.
+
+
+return
