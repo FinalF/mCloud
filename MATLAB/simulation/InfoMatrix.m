@@ -7,6 +7,8 @@ function [matrix,k] = InfoMatrix(distribution)
 %4. d_i: the distance to center (d_i is less than R)
 %5.a_i: the signal parameter, random in [1,d_i^s]
 %6. s_i: signal strength =a_i/d_i^2
+%7. cap_i: number ofdevices can support
+%8. common_i: amount of duplicate with others
 %----------------------------------------
 
 %The geo area 1000x1000
@@ -15,17 +17,13 @@ R=1000;
 n=200;
 capacity=5; %maximum number of devices a group leader can support
 k=n/capacity;
-infoMatrix=zeros(6,n);
+infoMatrix=zeros(8,n);
 
 
 if strcmp(distribution,'random')
 %step1: generate information
 infoMatrix(1,:)=2*pi*rand(1,n);
 infoMatrix(4,:)=R/15+14*R/15*rand(1,n);
-% infoMatrix(2,:)=infoMatrix(4,:).*cos(infoMatrix(1,:));
-% infoMatrix(3,:)=infoMatrix(4,:).*sin(infoMatrix(1,:));
-% infoMatrix(5,:)=(infoMatrix(4,:).^s-1).*rand(1,n)+1;
-% infoMatrix(6,:)=infoMatrix(5,:)./infoMatrix(4,:).^2;
 elseif strcmp(distribution,'normal')
 infoMatrix(1,1:n/2)=pi+pi/6*randn(1,n/2);
 infoMatrix(1,n/2+1:n)=pi/6+pi/6*randn(1,n/2);
@@ -34,8 +32,11 @@ end
 infoMatrix(2,:)=infoMatrix(4,:).*cos(infoMatrix(1,:));
 infoMatrix(3,:)=infoMatrix(4,:).*sin(infoMatrix(1,:));
 infoMatrix(5,:)=(infoMatrix(4,:).^s-1).*rand(1,n)+1;
+% infoMatrix(5,:)=log(infoMatrix(4,:));
 infoMatrix(6,:)=infoMatrix(5,:)./infoMatrix(4,:).^2;
 
+infoMatrix(7,:)=floor(capacity+2*randn(1,n));
+infoMatrix(8,:)=ones(1,n);
 
 
 % plot(0,0,'-hr','MarkerSize',8)
@@ -46,10 +47,10 @@ infoMatrix(6,:)=infoMatrix(5,:)./infoMatrix(4,:).^2;
 % end
 
 %step2: sort the matrix, the last k nodes are group leader,mark them out
-[r, c] = size(infoMatrix); 
+
 tmp=infoMatrix;
-tmp(1,:) = infoMatrix(r,:); 
-tmp(r,:) = infoMatrix(1,:); 
+tmp(1,:) = infoMatrix(6,:); 
+tmp(6,:) = infoMatrix(1,:); 
 infoMatrix=tmp;
 
 matrix=sortrows(infoMatrix')';
