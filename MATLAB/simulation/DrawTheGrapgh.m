@@ -1,4 +1,4 @@
-function  DrawTheGrapgh(X,k)
+function  DrawTheGrapgh(X,Y,k)
 
 [r, c] = size(X); 
 
@@ -14,5 +14,12 @@ plot(X(2,i),X(3,i),'+r','MarkerSize',3)
 hold on
 end
 
+%plot participants devices
+for i=1:c-k
+   if Y(i)==1
+       plot(X(2,i),X(3,i),'*g','MarkerSize',3)
+        hold on
+   end
+end
 
 end
