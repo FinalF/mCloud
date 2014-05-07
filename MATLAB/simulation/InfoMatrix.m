@@ -1,6 +1,7 @@
 function [matrix,k] = InfoMatrix(distribution)
 
 %To generate the information of devices
+%rows:
 %1. de_i: the degree 
 %2 x_i: the coordinate
 %3. y_i: the coordinate
