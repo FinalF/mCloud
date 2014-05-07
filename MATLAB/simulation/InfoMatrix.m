@@ -7,7 +7,7 @@ function [matrix,k] = InfoMatrix(distribution)
 %4. d_i: the distance to center (d_i is less than R)
 %5.a_i: the signal parameter, random in [1,d_i^s]
 %6. s_i: signal strength =a_i/d_i^2
-%7. cap_i: number ofdevices can support
+%7. cap_i: number of devices can support
 %8. common_i: amount of duplicate with others
 %----------------------------------------
 
