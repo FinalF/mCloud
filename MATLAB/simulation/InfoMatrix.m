@@ -40,12 +40,6 @@ infoMatrix(7,:)=floor(capacity+2*randn(1,n));
 infoMatrix(8,:)=ones(1,n);
 
 
-% plot(0,0,'-hr','MarkerSize',8)
-% hold on
-% for i=1:n
-% plot(infoMatrix(2,i),infoMatrix(3,i),'o','MarkerSize',3,'MarkerFaceColor','auto')
-% hold on
-% end
 
 %step2: sort the matrix, the last k nodes are group leader,mark them out
 
@@ -56,13 +50,6 @@ infoMatrix=tmp;
 
 matrix=sortrows(infoMatrix')';
 
-% for i=n-k+1:n
-% plot(sortMatrix(2,i),sortMatrix(3,i),'+r','MarkerSize',3)
-% hold on
-% end
-
-%step3: calculate the stats: how much can we save? Assume that each device
-%has an identical unit load.
 
 
 return
