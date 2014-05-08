@@ -1,5 +1,7 @@
-
-%Group leader selection
+%Simulate the Wigroup formation process
+%
+% 1. Group leader selection
+% 2. Other devices connect to group leaders
 [matrix,k] = InfoMatrix('random');
 
 

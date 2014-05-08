@@ -1,4 +1,6 @@
 function  DrawTheGrapgh(X,Y,k)
+%Based on the matrix and Wigropu member mark array
+%Plot the scenario in which group leaders and other devices are makred
 
 [r, c] = size(X); 
 

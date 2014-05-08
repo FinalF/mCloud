@@ -1,9 +1,6 @@
 function Y = k_center(X,k)
 %input: the infomatrix
 %output: the matrix in which Y(:,n-k+1:n) are group leaders 
-
-
-
 %greedy k-center 
 %Find k centers such that distance between any point and its 
 %closest center is as small as possible
