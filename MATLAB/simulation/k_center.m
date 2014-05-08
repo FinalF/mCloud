@@ -13,7 +13,6 @@ function Y = k_center(X,k)
 %d(y, C) = min x in C d(x, y)
 %C = C U {y}
 [r,n]=size(X);
-D=dist(X);
 x_index = ceil((n-1)*rand()+1);
 count=1;
 %switch chosen column to the end
@@ -21,6 +20,7 @@ X(:,[x_index,n-count+1])=X(:,[n-count+1,x_index]);
 while count<k
    %find the next group leader
    maxYC=-inf;
+   D=dist(X);
    for i=1:n-count
        tmp=min(D(i,n-count+1:n));
        if tmp>maxYC
@@ -29,24 +29,24 @@ while count<k
        end
    end
    count=count+1;
-   X(:,[x_index,n-count+1])=X(:,[n-count+1,x_index]);
-    
+   X(:,[x_index,n-count+1])=X(:,[n-count+1,x_index]);    
 end
+Y=X;
 
 
 
-function dist = dist(X)
-%return a n by n matrix which records the distance between each pair of
-%nodes
-[r,n]=size(X);
-dist=inf(n,n);
-    for i=1:n-1
-        for j=i+1:n
-            dist(i,j)=sqrt((X(2,i)-X(2,j))^2+(X(3,i)-X(3,j))^2);
-            dist(j,i)=dist(i,j);
+    function dist = dist(X)
+    %return a n by n matrix which records the distance between each pair of
+    %nodes
+    [r,n]=size(X);
+    dist=inf(n,n);
+        for i=1:n-1
+            for j=i+1:n
+                dist(i,j)=sqrt((X(2,i)-X(2,j))^2+(X(3,i)-X(3,j))^2);
+                dist(j,i)=dist(i,j);
+            end
         end
-    end
-return
+    return
 
 
 return

@@ -15,7 +15,7 @@ function [matrix,k] = InfoMatrix(distribution)
 %The geo area 1000x1000
 s=1.8; %signal tuning parameter
 R=1000;
-n=200;
+n=400;
 capacity=5; %maximum number of devices a group leader can support
 k=n/capacity;
 infoMatrix=zeros(8,n);
