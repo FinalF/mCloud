@@ -14,22 +14,36 @@ function Y = k_center[X,k]
 %C = C U {y}
 [r,n]=size(X);
 x_index = ceil((n-1)*rand()+1);
+%switch chosen column to the end
+X(:,[x_index,n-count+1])=X(:,[n-count+1,x_index]);
 count=1;
 while count<k
-   %switch chosen column to the end
-   X(:,[x_index,n-count+1])=X(:,[n-count+1,x_index]);
    %find the next group leader
-   max_index=1;
+   maxYC=-inf;
    for i=1:n-count
-       
+       tmp=min(dist(i,n-count+1:n));
+       if tmp>maxYC
+           maxYC=tmp;
+           x_index=i;
+       end
    end
+   count=count+1;
+   X(:,[x_index,n-count+1])=X(:,[n-count+1,x_index]);
     
 end
+
+
 
 function dist = dist(X)
 %return a n by n matrix which records the distance between each pair of
 %nodes
 dist=inf(n,n);
+    for i=1:n-1
+        for j=i+1:n
+            dist(i,j)=sqrt((X(2,i)-X(2,j))^2+(X(3,i)-X(3,j))^2);
+            dist(j,i)=dist(i,j);
+        end
+    end
 return
 
 
