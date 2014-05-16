@@ -16,7 +16,10 @@ count=1;
 %switch chosen column to the end
 X(:,[x_index,n-count+1])=X(:,[n-count+1,x_index]);
 
-
+expandK=floor(a*k);
+if expandK >= n
+    expandK=n-1;
+end
 
 %Deal with outliers: choose a* k group leaders, keep only k with more
 %neighbers than the others
@@ -24,7 +27,7 @@ X(:,[x_index,n-count+1])=X(:,[n-count+1,x_index]);
 %define the communication range of each device
 cr= 100;
 %%step1: find a*k group leaders
-while count<a*k
+while count<expandK
    %find the next group leader
    maxYC=-inf;
    D=dist(X);
@@ -40,15 +43,19 @@ while count<a*k
 end
 
 %%step2: only keep k of them
-D=distance(X,a*k);  %n-a*k by a*k 
+D=distance(X,expandK);  %n-a*k by a*k 
 neighbers=zeros(1,n); %record how many neighbers each leader has
 % neighbers(2,:)=[n-a*k+1:n];
+% Z=logical([neighbers;X]);
 Z=[neighbers;X];
-
-for i=1:n-a*k
-   for j=1:a*k
-       if D(i,j)<cr          
-           Z(1,n-a*k+j)=Z(1,n-a*k+j)+1;
+for i=1:n-expandK
+   for j=1:expandK
+       if D(i,j)<cr     
+%            disp('debug output: ')
+%            disp(n)
+%            disp(expandK)
+%            disp(j)
+           Z(1,n-expandK+j)=Z(1,n-expandK+j)+1;
        end  
    end
 end

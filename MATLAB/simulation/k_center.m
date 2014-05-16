@@ -32,6 +32,7 @@ Y=X;
 
 
 
+
     function dist = dist(X)
     %return a n by n matrix which records the distance between each pair of
     %nodes
